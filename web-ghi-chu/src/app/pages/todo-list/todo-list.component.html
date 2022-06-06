@@ -1,0 +1,19 @@
+
+<nz-spin [nzSpinning]="isSpinning">
+  <div class="grid p-fluid">
+    <div class="row">
+      <div class="d-flex justify-content-center">
+        <p-card [style]="{'width': '40rem', 'overflow': 'auto'}">
+          <div class="d-flex">
+              <input type="text" placeholder="Nhập công việc" name="task" pInputText [(ngModel)]="taskInput">
+              <button pButton pRipple type="button" icon="pi pi-plus" (click)="saveTask($event)" class="p-button-rounded p-button-success"></button>
+          </div>
+        </p-card>
+      </div>
+    </div>
+    <div class="row mx-2 my-2">
+      <app-task-list (loadDataEvent)="searchTodo()" [listTask]="listTask"></app-task-list>
+    </div>
+  </div>
+</nz-spin>
+<p-toast position="bottom-right"></p-toast>

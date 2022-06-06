@@ -1,0 +1,7 @@
+<p-card [header]="noteItem?.title" styleClass="p-card-shadow w-80 mx-2">
+  <p>{{noteItem?.description}}</p>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple type="button" icon="fa fa-trash"  class="p-button-rounded p-button-text"></button>
+    <button pButton pRipple type="button" icon="fa fa-reply"  class="p-button-rounded p-button-text"></button>
+  </ng-template>
+</p-card>

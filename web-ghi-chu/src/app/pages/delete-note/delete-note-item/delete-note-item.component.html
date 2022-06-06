@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-center flex-wrap">
+
+  <p-card *ngIf="!listLayout" [header]="note?.title" [style]="styleItem">
+    <div class="text-elip">
+      <p class="description">{{note?.description}}</p>
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple type="button" icon="fa fa-trash" (click)="deleteNote()" class="p-button-rounded p-button-text"></button>
+      <button pButton pRipple type="button" icon="fa fa-reply" (click)="revertDeleteNote()" class="p-button-rounded p-button-text"></button>
+    </ng-template>
+  </p-card>
+
+  <p-card *ngIf="listLayout" [header]="note?.title" [style]="styleItem">
+    <div class="text-elip">
+      <p class="description">{{note?.description}}</p>
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple type="button" icon="fa fa-trash" (click)="deleteNote()" class="p-button-rounded p-button-text"></button>
+      <button pButton pRipple type="button" icon="fa fa-reply" (click)="revertDeleteNote()" class="p-button-rounded p-button-text"></button>
+    </ng-template>
+  </p-card>
+
+</div>
+
+<p-confirmDialog [style]="{width: '50vw'}"  rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+

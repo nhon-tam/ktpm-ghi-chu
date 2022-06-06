@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-center my-2">
+  <p-card [style]="{'width': '40rem', 'overflow': 'auto'}">
+    <div class="row">
+      <div class="col-8">
+        <div class="d-flex">
+          <p-checkbox [(ngModel)]="todoRequest.status" (onChange)="onChangeStatus($event)" [binary]="true" inputId="binary"></p-checkbox>
+          <h4 class="mx-2" [ngClass]="todoRequest.status? 'line-through': ''">{{task?.task}}</h4>
+        </div>
+      </div>
+      <div class="col-4">
+        <span class="p-buttonset">
+          <button pButton pRipple icon="pi pi-pencil" (click)="showUpdateModal()" class="p-button-success"></button>
+          <button pButton pRipple  icon="pi pi-times" (click)="deleteTask($event)" class="p-button-danger"></button>
+        </span>
+      </div>
+
+    </div>
+  </p-card>
+</div>
+
+<p-dialog header="Chỉnh sửa" (onHide)="handleClose($event)" [(visible)]="displayModal" [position]="'top'" [modal]="true" [style]="{'width': '50vw', 'margin-top': '100px'}"
+    [draggable]="false" [resizable]="false">
+      <div class="row">
+        <div class="col-8">
+          <input type="text" placeholder="Nhập công việc" name="task" pInputText [(ngModel)]="taskInput">
+        </div>
+        <div class="col-4">
+          <button pButton pRipple type="button" label="Cập nhật" icon="pi pi-pencil" (click)="updateTask($event)" class="p-button-rounded p-button-success"></button>
+        </div>
+      </div>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

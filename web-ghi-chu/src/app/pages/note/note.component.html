@@ -1,0 +1,14 @@
+<nz-spin [nzSpinning]="isSpinning">
+    <div class="grid p-fluid">
+      <div class="row">
+        <div class="d-flex justify-content-center">
+          <app-edit-note-bar (LoadDataEvent)="loadNoteData()"></app-edit-note-bar>
+        </div>
+
+      </div>
+      <div class="row mx-2 my-2">
+          <app-note-list (loadDataEmit)="loadNoteData()" [listNote]="noteList"></app-note-list>
+      </div>
+    </div>
+</nz-spin>
+<p-toast position="bottom-right"></p-toast>

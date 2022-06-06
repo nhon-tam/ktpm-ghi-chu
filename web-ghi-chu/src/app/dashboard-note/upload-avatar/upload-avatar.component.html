@@ -1,0 +1,13 @@
+<nz-upload
+  nzType="drag"
+  class="avatar-uploader"
+>
+  <ng-container *ngIf="!avatarUrl">
+    <p class="ant-upload-drag-icon">
+      <i nz-icon nzType="inbox"></i>
+    </p>
+    <p class="ant-upload-text">Bấm hoặc thả file vào đây.</p>
+  </ng-container>
+
+  <img *ngIf="avatarUrl" style="width: 100%" />
+</nz-upload>

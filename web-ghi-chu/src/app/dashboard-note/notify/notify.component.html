@@ -1,0 +1,32 @@
+<p-toast position="top-right" key="a" (click)="onRejectA()" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+      <div class="flex flex-column" style="flex: 1">
+          <div class="text-center">
+              <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+              <h4>{{message.summary}}</h4>
+              <p>{{message.detail}}</p>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <button type="button"pButton pRipple (click)="showBottomLeft()" label="Đồng ý" class="p-button-success"></button>
+              </div>
+              <div class="col-md-6">
+                <button type="button"pButton pRipple (click)="onRejectA()" label="Hủy" class="p-button-secondary"></button>
+              </div>
+          </div>
+      </div>
+  </ng-template>
+</p-toast>
+
+<p-toast position="bottom-left" key="b" [baseZIndex]="5000">
+  <ng-template let-message pTemplate="message">
+      <div class="flex flex-column" style="flex: 1">
+          <div class="text-center">
+              <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+              <h4>{{message.summary}}</h4>
+              <p>{{message.detail}}</p>
+              <button type="button"pButton pRipple (click)="onRejectB()" routerLink="notification" routerLinkActive="active" label="Đồng ý" class="p-button-success"></button>
+          </div>
+      </div>
+  </ng-template>
+</p-toast>

@@ -1,0 +1,11 @@
+.hide-border {
+  border-width:0px;
+  border:none;
+  outline: none!important;
+}
+
+.hide-border:focus{
+  box-shadow: none;
+}
+
+

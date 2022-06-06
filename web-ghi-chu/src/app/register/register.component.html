@@ -1,0 +1,45 @@
+<nz-spin [nzSpinning]="isSpinning" nzTip="Đang khởi động">
+  <div class="formLogin">
+    <div class="header-login">
+        <div class="title-header">
+            <span>
+                <img src="../../assets/logo.png" width="35px" height="35px" />
+                <span class="ml-2"> ĐỒ ÁN CÔNG NGHỆ PHẦN MỀM 2 </span>
+            </span>
+            <span>KHOA CÔNG NGHỆ THÔNG TIN</span>
+        </div>
+    </div>
+    <div class="container-form">
+        <div class="div-img">
+            <img class="image-logo" src="../../assets/logo.png" />
+        </div>
+        <div class="login-form">
+            <h3 class="title">Đăng ký</h3>
+            <p class="sub-title">Vui lòng nhập tài khoản và mật khẩu để sử dụng hệ thống</p>
+            <div class="form-login">
+                <input [class.border]="usernameError.length > 0" [class.border-danger]="usernameError.length > 0" class="form-control form-control-md mb-3" (keyup.enter)="register()" placeholder="Tài khoản" autocomplete="off" [(ngModel)]="modelRegister.username">
+                <p class="messError" *ngFor="let item of usernameError">
+                  {{item}}
+                </p>
+                <input [class.border]="passwordError.length > 0" [class.border-danger]="passwordError.length > 0" class="form-control form-control-md mb-3" (keyup.enter)="register()" type="password" placeholder="Mật khẩu" autocomplete="off" [(ngModel)]="modelRegister.password">
+                <p class="messError" *ngFor="let item of passwordError">{{item}}</p>
+                <input [class.border]="rePassError.length > 0" [class.border-danger]="rePassError.length > 0" class="form-control form-control-md mb-3" (keyup.enter)="register()" type="password" placeholder="Nhập lại Mật khẩu" autocomplete="off" [(ngModel)]="modelRegister.confirmPassword">
+                <p class="messError" *ngFor="let item of rePassError">{{item}}</p>
+                <a routerLink="/login">
+                  <span class="mb-2" >Đã có tài khoản?</span>
+                </a>
+                <button [disabled]="btnDisabled" class="btn-block mb-5 font-weight-bold btn btn-secondary btn-login" (click)="register()">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    <span class="ml-2">Đăng ký</span>
+                </button>
+                <hr class="hr-custom"/>
+                <p class="text-center mt-4"><b>ỨNG DỤNG GHI CHÚ</b></p>
+            </div>
+        </div>
+        <!-- <div class="footer-login">
+            <h6 class="mb-0">Copyright © 2022 CP Tin học Trí Thức, All rights reserved.</h6>
+        </div> -->
+    </div>
+  </div>
+</nz-spin>
+<p-toast position="top-right"></p-toast>

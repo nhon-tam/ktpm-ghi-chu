@@ -1,0 +1,5 @@
+<div class="grid p-fluid">
+   <div *ngFor="let item of listTask">
+      <app-task-item [task]="item" (loadDataEvent)="loadData($event)"></app-task-item>
+   </div>
+</div>

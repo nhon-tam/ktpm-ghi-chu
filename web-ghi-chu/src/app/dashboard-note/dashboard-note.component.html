@@ -1,0 +1,128 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a href="" target="_blank">
+        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
+        <h1>ỨNG DỤNG GHI CHÚ</h1>
+      </a>
+    </div>
+    <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <li
+          nz-menu-item
+          nz-tooltip
+          nzSelected
+          nz-menu-item
+          nzMatchRouter
+        >
+          <a routerLink="note" routerLinkActive="active">
+            <i nz-icon nzType="book"></i>
+            <span>Ghi chú</span>
+          </a>
+
+        </li>
+        <!-- <li
+          nz-menu-item
+          nz-tooltip
+          nz-menu-item
+          nzMatchRouter
+        >
+          <a routerLink="notification" routerLinkActive="active">
+            <i nz-icon nzType="notification"></i>
+            <span>Lời nhắc</span>
+          </a>
+
+        </li> -->
+        <li
+          nz-menu-item
+          nz-tooltip
+          nz-menu-item
+          nzMatchRouter
+        >
+          <a routerLink="todo-list" routerLinkActive="active">
+            <i nz-icon nzType="check-square" nzTheme="outline"></i>
+            <span>Danh sách công việc</span>
+          </a>
+
+        </li>
+        <li
+          nz-menu-item
+          nz-tooltip
+          nz-menu-item
+          nzMatchRouter
+        >
+        <a routerLink="bin" routerLinkActive="active">
+          <i nz-icon nzType="delete"></i>
+          <span>Thùng rác</span>
+        </a>
+        </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header d-flex justify-content-between">
+        <div>
+          <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <div
+            class="trigger"
+              nz-icon
+              [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></div>
+         </span>
+        </div>
+
+        <div>
+          <span class="p-input-icon-left ">
+            <i class="pi pi-search"></i>
+            <input type="text" class="btnSearch" [(ngModel)]="searchFilter" (ngModelChange)="filter($event)" pInputText placeholder="Nhập từ khóa tìm kiếm..."  />
+          </span>
+        </div>
+        <div>
+          <button pButton pRipple type="button" icon="pi pi-refresh" (click)="reloadData($event)" class="p-button-rounded p-button-secondary p-button-text"></button>
+          <button pButton pRipple type="button" (click)="changeLayout($event)" [icon]="listLayout ? 'fa fa-th-large': 'fa fa-bars'" class="p-button-rounded p-button-secondary p-button-text"></button>
+
+        </div>
+
+
+
+        <div class="pull-right info">
+          <span class="ml-2" nzTrigger="click" nz-dropdown [nzDropdownMenu]="menu"><p-avatar icon="pi pi-user" shape="circle" styleClass="image-info" size="large"></p-avatar></span>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul style="border-radius: 5px; margin-top: 10px;" nz-menu>
+                  <li class="avatar d-flex justify-content-center" (click)="showUploadAvatarModal()">
+                      <p-avatar p-avatar icon="pi pi-user" [styleClass]="'image-avatar'" shape="circle" size="xlarge"></p-avatar>
+                  </li>
+                  <li class="d-flex justify-content-center">
+                    <h4>{{userProfile?.userName}}</h4>
+                  </li>
+                  <!-- <li routerLink="profile" routerLinkActive="active" style="min-width: 200px;" class="drop-menu-li" nz-menu-item><i nz-icon nzType="info-circle" nzTheme="outline"></i><span class="ml-3">Thông tin cá nhân</span></li> -->
+                  <li nz-menu-divider></li>
+                  <li (click)="signOut()" style="min-width: 200px;" class="drop-menu-li" nz-menu-item><i nz-icon nzType="logout" nzTheme="outline"></i><span class="ml-3">Đăng xuất</span></li>
+              </ul>
+          </nz-dropdown-menu>
+      </div>
+        <!-- <p-avatar icon="pi pi-user" styleClass="my-2 mx-4" [style]="{'float': 'right'}" size="large"></p-avatar> -->
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <p-scrollPanel [style]="{width: '100%', height: '78vh'}">
+          <router-outlet></router-outlet>
+          <p-scrollTop [threshold]="100" icon="pi pi-arrow-up"></p-scrollTop>
+        </p-scrollPanel>
+        <app-notify></app-notify>
+      </div>
+    </nz-content>
+  </nz-layout>
+
+</nz-layout>
+<p-dialog (onHide)="onHideModal()" [draggable]="false" [(visible)]="displayModal" [modal]="true" [style]="{width: '586px', height: '500px'}">
+  <ng-template pTemplate="header">
+    <h5>Ảnh hồ sơ</h5>
+  </ng-template>
+  <app-upload-avatar></app-upload-avatar>
+</p-dialog>

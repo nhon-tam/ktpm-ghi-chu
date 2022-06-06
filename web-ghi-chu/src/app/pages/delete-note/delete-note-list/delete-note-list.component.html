@@ -1,0 +1,7 @@
+<div [class]="listLayout? 'grid p-fluid':'d-flex justify-content-start flex-wrap'">
+  <div *ngFor="let item of listNote">
+      <app-delete-note-item [note]="item"
+      (deleteEvent)="loadDataNote()"></app-delete-note-item>
+  </div>
+</div>
+

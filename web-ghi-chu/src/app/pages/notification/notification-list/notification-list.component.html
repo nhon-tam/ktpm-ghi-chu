@@ -1,0 +1,6 @@
+<div class="d-flex flex-row">
+  <div *ngFor="let item of listNotification">
+    <app-notification-item [noteItem]="item"
+    (changeData)="loadData()"></app-notification-item>
+  </div>
+</div>

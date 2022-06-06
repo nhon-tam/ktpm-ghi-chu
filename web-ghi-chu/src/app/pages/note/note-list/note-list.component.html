@@ -1,0 +1,6 @@
+<div [class]="listLayout? 'grid p-fluid':'d-flex justify-content-start flex-wrap'">
+  <div *ngFor="let item of listNote">
+    <app-note-item [noteItem]="item"
+    (changeData)="loadDataNote()"></app-note-item>
+  </div>
+</div>

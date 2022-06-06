@@ -1,0 +1,33 @@
+<input *ngIf="showNoteBar" type="text" [style]="{'width': '40rem', 'margin-bottom': '2em' }" pInputText placeholder="Tạo ghi chú..."/>
+
+<p-card *ngIf="showEditNote" [style]="{'width': '40rem', 'overflow': 'auto'}">
+    <ng-template pTemplate="header">
+      <textarea class="hide-border text-elip" name="title" [(ngModel)]="noteRequest.title" placeholder="Tiêu đề" rows="1"  pInputTextarea [autoResize]="true"></textarea>
+      <textarea class="hide-border text-elop" name="description" [(ngModel)]="noteRequest.description" placeholder="Tạo ghi chú" rows="1" pInputTextarea [autoResize]="true"></textarea>
+
+    </ng-template>
+
+    <div class="row">
+      <div *ngFor="let priority of priorities" class="field-checkbox col">
+        <p-radioButton name="category" [value]="priority" [(ngModel)]="selectedPriority"></p-radioButton>
+        <label [for]="priority?.key">{{priority?.name}}</label>
+      </div>
+    </div>
+
+
+    <!-- <input class="hide-border" type="text"  pInputText placeholder="Tạo ghi chú..."/> -->
+
+    <ng-template pTemplate="footer">
+      <div class="d-flex justify-content-between">
+        <div class="list-icon">
+          <button pButton pRipple type="button" icon="pi pi-bell" class="p-button-rounded p-button-text"></button>
+          <button pButton pRipple type="button" icon="pi pi-share-alt" class="p-button-rounded p-button-text"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text"></button>
+        </div>
+        <div class="close-edit red d-flex">
+          <button pButton pRipple type="button" label="Đóng" (click)="saveAndClose($event)" class="p-button-secondary p-button-text"></button>
+        </div>
+      </div>
+
+    </ng-template>
+</p-card>

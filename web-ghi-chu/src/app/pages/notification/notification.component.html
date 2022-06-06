@@ -1,0 +1,11 @@
+<nz-spin [nzSpinning]="isSpinning">
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <i class="p-header">Ghi chú.</i>
+    </div>
+  </div>
+  <div class="row">
+    <app-notification-list (loadDataEmit)="loadNotificationData()" [listNotification]="notificationlist"></app-notification-list>
+  </div>
+</nz-spin>
+<p-toast position="bottom-right"></p-toast>

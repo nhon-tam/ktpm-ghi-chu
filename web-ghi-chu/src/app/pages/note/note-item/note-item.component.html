@@ -1,0 +1,132 @@
+<div class="d-flex justify-content-center flex-wrap">
+
+  <p-card *ngIf="!listLayout" [draggable]="false"
+
+    [style]="styleItem">
+      <ng-template pTemplate="header">
+        <div class="d-flex justify-content-between">
+          <b class="title">{{noteItem?.title}}</b>
+          <button pButton pRipple (click)="showModal()" type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
+        </div>
+      </ng-template>
+      <div class="text-elip">
+        <p class="description">{{noteItem?.description}}</p>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
+        <button pButton pRipple type="button" [hidden]="true" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+      </ng-template>
+    </p-card>
+
+    <p-card *ngIf="listLayout" [draggable]="false"
+
+    [style]="styleItem">
+      <ng-template pTemplate="header">
+        <div class="d-flex justify-content-between">
+          <b class="title">{{noteItem?.title}}</b>
+          <button pButton pRipple (click)="showModal()" type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
+        </div>
+      </ng-template>
+      <div class="text-elip">
+        <p class="description">{{noteItem?.description}}</p>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
+        <button pButton pRipple type="button" [hidden]="true" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+      </ng-template>
+    </p-card>
+  </div>
+
+<nz-spin [nzSpinning]="isSpinning" >
+  <p-dialog (onHide)="onHideModal()" [(visible)]="collabModal" [modal]="true" [style]="{width: '586px', height: '600px'}">
+    <ng-template pTemplate="header">
+      <h4>Cộng tác viên</h4>
+    </ng-template>
+    <div class="row mt-2">
+      <div class="col-2">
+        <p-avatar p-avatar icon="pi pi-user" [styleClass]="'image-avatar'" shape="circle" size="xlarge"></p-avatar>
+      </div>
+      <div class="col-8">
+        <h5 class="mt-2"><b>{{ownerInfor?.userName}}</b></h5>
+        <i>(Chủ sỡ hữu)</i>
+      </div>
+    </div>
+    <div class="row mt-3" *ngFor="let item of userCollabList; index as i">
+      <div class="row">
+        <div class="col-2">
+          <p-avatar p-avatar icon="pi pi-user" [styleClass]="'image-avatar'" shape="circle" size="xlarge"></p-avatar>
+        </div>
+        <div class="col-8">
+          <span class="p-float-label">
+            <p-autoComplete styleClass="hide-border" (onSelect)="onSelectUser(item.user)" [(ngModel)]="item.user" inputId="autocomplete" field="userName" [showEmptyMessage]="true" [suggestions]="usernameResults" (completeMethod)="searchUser($event)">
+              <ng-template let-user pTemplate="item">
+                <div class="row">
+                    <div class="col-3">
+                      <p-avatar p-avatar icon="pi pi-user" [styleClass]="'image-avatar'" shape="circle" size="xlarge"></p-avatar>
+                    </div>
+                    <div class="col-7"><b>{{user?.userName}}</b></div>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+            <label for="autocomplete" *ngIf="!item?.user?.userName">Tên tài khoản của người bạn muốn chia sẻ</label>
+          </span>
+          <p class="messError" *ngIf="item.hasError">Tên người dùng không tồn tại!</p>
+        </div>
+        <div class="col ">
+          <button *ngIf="this.noteItem?.user?.userName === this.ownerInfor?.userName" pButton pRipple type="button" [icon]="item.icon" class="p-button-rounded p-button-text" (click)="addOrRemoveUser(i)"></button>
+        </div>
+      </div>
+    </div>
+    <ng-template  pTemplate="footer">
+      <button pButton pRipple type="button" label="Hủy" class="p-button-secondary" (click)="cancelCollabList($event)"></button>
+      <button *ngIf="this.noteItem?.user?.userName === this.ownerInfor?.userName"  pButton pRipple type="button" label="Lưu" class="p-button-success" (click)="saveCollabList($event)"></button>
+    </ng-template>
+  </p-dialog>
+</nz-spin>
+
+
+<nz-spin [nzSpinning]="isSpinning" >
+  <p-dialog (onHide)="onHideModal()" [(visible)]="displayModal" [modal]="true" [style]="{width: '586px', height: '500px'}">
+    <ng-template pTemplate="header">
+        <textarea class="hide-border title-edit" name="title" [(ngModel)]="noteRequest.title" placeholder="Tiêu đề" rows="1"  pInputTextarea [autoResize]="true"></textarea>
+    </ng-template>
+    <textarea class="hide-border description-edit" name="description" [(ngModel)]="noteRequest.description" placeholder="Tạo ghi chú" rows="1" pInputTextarea [autoResize]="true"></textarea>
+    <ng-template pTemplate="footer">
+      <div class="row">
+        <div class="d-flex justify-content-between">
+
+          <div *ngFor="let priority of priorities" class="field-checkbox">
+            <p-radioButton name="category" [value]="priority" [(ngModel)]="selectedPriority"></p-radioButton>
+            <label [for]="priority?.key">{{priority?.name}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="d-flex justify-content-between">
+          <div class="list-icon w-100">
+            <div class="d-flex justify-content-start">
+              <!-- <div class="mx-2">
+                <button pButton pRipple type="button" icon="pi pi-bell" class="p-button-rounded p-button-text"></button>
+              </div> -->
+              <!-- <div class="mx-2">
+                <button [hidden]="true" pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+              </div> -->
+              <div class="mx-2">
+                <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
+              </div>
+            </div>
+          </div>
+          <div class="close-edit">
+            <div class="d-flex justify-content-start ">
+              <button pButton pRipple type="button" label="Lưu" (click)="saveAndClose($event)" class="p-button-success p-button-text"></button>
+              <button pButton pRipple type="button" label="Đóng" (click)="hideModal()" class="p-button-secondary p-button-text"></button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dialog>
+</nz-spin>
+
+<p-toast position="bottom-right"></p-toast>

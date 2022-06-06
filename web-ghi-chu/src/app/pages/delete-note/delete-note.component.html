@@ -1,0 +1,29 @@
+<nz-spin [nzSpinning]="isSpinning">
+    <div class="row">
+      <div class="d-flex justify-content-center">
+        <i class="p-header">Ghi chú trong Thùng rác bị xóa sau 7 ngày.</i>
+        <button pButton pRipple type="button" class="p-button-text p-button" (click)="deleteAll()">Dọn sạch thùng rác</button>
+      </div>
+    </div>
+    <div class="row mx-2 my-2">
+      <app-delete-note-list (loadDataEmit)="loadSearch()" [listNote]="deletenotelist"></app-delete-note-list>
+    </div>
+</nz-spin>
+<p-toast position="bottom-right"></p-toast>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
+<!-- <nz-spin [nzSpinning]="isSpinning">
+  <div class="grid p-fluid">
+    <div class="row">
+      <div class="d-flex justify-content-center">
+        <app-edit-note-bar (LoadDataEvent)="loadNoteData()"></app-edit-note-bar>
+      </div>
+
+    </div>
+    <div class="row mx-2 my-2">
+        <app-note-list (loadDataEmit)="loadNoteData()" [listNote]="noteList"></app-note-list>
+    </div>
+  </div>
+</nz-spin>
+<p-toast position="bottom-right"></p-toast> -->
