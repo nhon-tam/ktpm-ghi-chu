@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { NoteRequest } from 'src/app/shared/models/note-request.model';
 import { MessageService } from 'primeng/api';
 import { PriorityRadio } from '../edit-note-bar/edit-note-bar.component';
-import { PriorityService } from 'src/app/shared/services/priority.service';
+// import { PriorityService } from 'src/app/shared/services/priority.service';
 
 export interface UserCollab{
   user: any;
@@ -80,7 +80,7 @@ export class NoteItemComponent implements OnInit {
     private userProfileService: UserProfileService,
     private usersService: UsersService,
     private messageService: MessageService,
-    private priorityService: PriorityService,
+    // private priorityService: PriorityService,
     private commonService: CommonService
     ) {
     this.changeData = new EventEmitter();
@@ -98,7 +98,7 @@ export class NoteItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initPriorities();
+    // this.initPriorities();
     this.commonService.listLayout$.subscribe((active)=>{
       this.listLayout = active;
       this.changeStyleNote();
@@ -106,75 +106,32 @@ export class NoteItemComponent implements OnInit {
     })
   }
 
-  initPriorities(){
-    this.priorityService.getAllPriority().subscribe((data: any[])=>{
-      this.priorities = data.map((item)=>({
-        name: item?.name,
-        key: item?.priorityId
-      }))
-      this.selectedPriority = this.priorities[0];
-    });
-  }
+  // initPriorities(){
+  //   this.priorityService.getAllPriority().subscribe((data: any[])=>{
+  //     this.priorities = data.map((item)=>({
+  //       name: item?.name,
+  //       key: item?.priorityId
+  //     }))
+  //     this.selectedPriority = this.priorities[0];
+  //   });
+  // }
 
   changeStyleNote(){
     if(this.listLayout){
+      this.styleItem = {
+        'width': '40rem'
+        ,'height': '14rem'
+        , 'margin-top': '20px'
+        ,'overflow': 'auto'
+        };
     }
     else{
+      this.styleItem ={'width': '17rem'
+          , 'margin': '0.3em'
+          , 'margin-top': '1em'
+          };
+    }
 
-    }
-    switch(this.noteItem?.priorityId){
-      case 2:{
-        if(this.listLayout){
-          this.styleItem = {
-            'width': '40rem'
-            ,'height': '14rem'
-            , 'margin-top': '20px'
-            ,'overflow': 'auto'
-            ,'background-color': 'rgb(252, 252, 118)'};
-        }
-        else{
-          this.styleItem ={'width': '17rem'
-          , 'margin': '0.3em'
-          , 'margin-top': '1em'
-          ,'background-color': 'rgb(252, 252, 118)'};
-        }
-        break;
-      };
-      case 3:{
-        if(this.listLayout){
-          this.styleItem = {
-            'width': '40rem'
-            ,'height': '14rem'
-            , 'margin-top': '20px'
-            ,'overflow': 'auto'
-            ,'background-color': 'rgb(249, 161, 124)'};
-        }
-        else{
-          this.styleItem ={'width': '17rem'
-          , 'margin': '0.3em'
-          , 'margin-top': '1em'
-          ,'background-color': 'rgb(249, 161, 124)'};
-        }
-        break;
-      };
-      default:{
-        if(this.listLayout){
-          this.styleItem = {
-            'width': '40rem'
-            ,'height': '14rem'
-            , 'margin-top': '20px'
-            ,'overflow': 'auto'
-            ,'background-color': 'rgb(133, 254, 122)'};
-        }
-        else{
-          this.styleItem ={'width': '17rem'
-          , 'margin': '0.3em'
-          , 'margin-top': '1em'
-          ,'background-color': 'rgb(133, 254, 122)'};
-        }
-        break;
-      }
-    }
   }
 
 

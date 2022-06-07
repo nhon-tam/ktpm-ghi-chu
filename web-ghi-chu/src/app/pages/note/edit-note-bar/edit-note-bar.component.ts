@@ -1,4 +1,4 @@
-import { PriorityService } from './../../../shared/services/priority.service';
+// import { PriorityService } from './../../../shared/services/priority.service';
 import { Component, OnInit, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { NoteRequest } from 'src/app/shared/models/note-request.model';
 import { NoteService } from 'src/app/shared/services/note.service';
@@ -35,7 +35,7 @@ export class EditNoteBarComponent implements OnInit {
 
   constructor(
     private noteService: NoteService,
-    private priorityService: PriorityService,
+    // private priorityService: PriorityService,
     private eRef: ElementRef,
     private fb: FormBuilder
   ) {
@@ -48,7 +48,7 @@ export class EditNoteBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initPriorities();
+    // this.initPriorities();
   }
 
   @HostListener('document:click', ['$event'])
@@ -97,15 +97,15 @@ export class EditNoteBarComponent implements OnInit {
     this.showEditNote = false;
   }
 
-  initPriorities(){
-    this.priorityService.getAllPriority().subscribe((data: any[])=>{
-      this.priorities = data.map((item)=>({
-        name: item?.name,
-        key: item?.priorityId
-      }))
-      this.selectedPriority = this.priorities[0];
-    });
-  }
+  // initPriorities(){
+  //   this.priorityService.getAllPriority().subscribe((data: any[])=>{
+  //     this.priorities = data.map((item)=>({
+  //       name: item?.name,
+  //       key: item?.priorityId
+  //     }))
+  //     this.selectedPriority = this.priorities[0];
+  //   });
+  // }
 
   isEmpty(str: string) {
     return (!str || str.length === 0 );

@@ -20,29 +20,27 @@ namespace WebGhiChu.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Priority>().HasData(
-                new Priority
-                {
-                    PriorityId = 1,
-                    Name = "Thấp",
-                },
-                new Priority
-                {
-                    PriorityId = 2,
-                    Name = "Trung bình",
-                },
-                new Priority
-                {
-                    PriorityId = 3,
-                    Name = "Cao",
-                }
-            );
+            //modelBuilder.Entity<Priority>().HasData(
+            //    new Priority
+            //    {
+            //        PriorityId = 1,
+            //        Name = "Thấp",
+            //    },
+            //    new Priority
+            //    {
+            //        PriorityId = 2,
+            //        Name = "Trung bình",
+            //    },
+            //    new Priority
+            //    {
+            //        PriorityId = 3,
+            //        Name = "Cao",
+            //    }
+            //);
 
         }
 
         public virtual DbSet<Note> Notes { get; set; }
-
-        public virtual DbSet<Priority> Priorities { get; set; }
 
         public virtual DbSet<ApplicationUser> Users { get; set; }
 

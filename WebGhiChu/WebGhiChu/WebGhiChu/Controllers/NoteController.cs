@@ -47,11 +47,8 @@ namespace WebGhiChu.Controllers
                 Description = noteRequest.Description,
                 NoteId = Guid.NewGuid(),
                 IsDeleted = false,
-                IsDeletedForever = false,
                 DateCreated = nowTime,
                 DateUpdated = nowTime,
-                IsSynced = false,
-                PriorityId = noteRequest.PriorityId.Value,
                 UserId  = userId
             };
 
@@ -98,7 +95,6 @@ namespace WebGhiChu.Controllers
 
         
             note.IsDeleted = true;
-            note.IsSynced = false;
 
             _context.Notes.Update(note);
 
@@ -117,29 +113,35 @@ namespace WebGhiChu.Controllers
         public async Task<IActionResult> Search(String Filter)
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
+
+            var listNote = await _context.Notes.Include(x => x.User)
+                                                    .Where(x => x.UserId.Equals(userId)
+                                                            && x.IsDeleted == false
+                                                            )
+                                                    .OrderByDescending(x => x.DateCreated)
+                                                    .ToListAsync();
+
+            var listCollabNote = await _context.UserNotes.Include(x => x.Note).Where(x => x.UserId.Equals(userId) && x.IsDeleted != true).ToListAsync();
+            if(listCollabNote != null && listCollabNote.Count > 0)
+            {
+                foreach(var collabNote in listCollabNote)
+                {
+                    listNote.Add(collabNote.Note);
+                }
+            }
+            listNote = listNote.OrderByDescending(x => x.DateCreated).ToList();
+
             if (String.IsNullOrWhiteSpace(Filter))
             {
-                var listNote = await _context.Notes.Include(x => x.User)
-                                                    .Include(x => x.Priority)
-                                                    .Where(x => x.UserId.Equals(userId) 
-                                                            && x.IsDeleted == false
-                                                            && x.IsDeletedForever == false
-                                                            )
-                                                    .OrderByDescending(x => x.PriorityId)
-                                                    .ThenBy(x => x.DateCreated)
-                                                    .ToListAsync();
                 return new JsonResult(listNote);
             }
-            var list = await _context.Notes
-                .Include(x => x.User)
-                .Include(x => x.Priority)
+
+            listNote = listNote
                 .Where(x => x.IsDeleted == false
-                    && x.IsDeletedForever == false
                     && x.UserId.Equals(userId)
                     && (x.Title.Contains(Filter) || x.Description.Contains(Filter))
-                    ).OrderByDescending(x => x.PriorityId)
-                    .ThenByDescending(x => x.DateCreated).ToListAsync();
-            return new JsonResult(list);
+                    ).OrderByDescending(x => x.DateCreated).ToList();
+            return new JsonResult(listNote);
         }
 
         [HttpPut("Update")]
@@ -171,8 +173,6 @@ namespace WebGhiChu.Controllers
             note.Title = noteRequest.Title;
             note.Description = noteRequest.Description;
             note.DateUpdated = nowTime;
-            note.IsSynced = false;
-            note.PriorityId = noteRequest.PriorityId.Value;
 
             _context.Notes.Update(note);
 
@@ -193,7 +193,7 @@ namespace WebGhiChu.Controllers
         public async Task<IActionResult> GetAllNote()
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
-            var listNote = await _context.Notes.Include(x => x.User).Include(x => x.Priority).Where(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.IsDeletedForever == false).OrderByDescending(x => x.PriorityId).ThenBy(x => x.DateCreated).ToListAsync();
+            var listNote = await _context.Notes.Include(x => x.User).Where(x => x.UserId.Equals(userId) && x.IsDeleted == false).OrderByDescending(x => x.DateCreated).ToListAsync();
             //var listCollabNote = await _context.UserNotes.Include(x => x.Note).Where(x => x.UserId.Equals(userId) && x.IsDeleted != true).ToListAsync();
             //if(listCollabNote != null && listCollabNote.Count > 0)
             //{
@@ -244,7 +244,6 @@ namespace WebGhiChu.Controllers
                         UserId = user.Id,
                         DateUpdated = nowTime,
                         DateCreated = nowTime,
-                        IsSynced = false,
                     };
                     await _context.UserNotes.AddAsync(userNote);
                 }
@@ -269,7 +268,6 @@ namespace WebGhiChu.Controllers
                     UserId = user.Id,
                     DateUpdated = nowTime,
                     DateCreated = nowTime,
-                    IsSynced = false,
                 };
                 await _context.UserNotes.AddAsync(userNote);
             }
@@ -319,7 +317,7 @@ namespace WebGhiChu.Controllers
         public async Task<IActionResult> GetDetail(Guid NoteId)
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
-            var note = await _context.Notes.Include(x => x.Priority).Where(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
+            var note = await _context.Notes.Where(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
             return new JsonResult(note);
         }
 

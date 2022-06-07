@@ -28,17 +28,7 @@ namespace WebGhiChu.Data.Models
 
         public bool? IsDeleted { get; set; }
 
-        public bool IsDeletedForever { get; set; } = false;
-
-        public bool? IsSynced { get; set; }
-
-
         public string UserId { get; set; }
-        public int PriorityId { get; set; }
-
-        [ForeignKey("PriorityId")]
-
-        public virtual Priority Priority { get; set; }
 
 
         [ForeignKey("UserId")]

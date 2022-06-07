@@ -21,11 +21,6 @@ namespace WebGhiChu.Data.Models
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
 
-        public bool? IsSynced { get; set; }
-
-        public bool IsDeletedForever { get; set; } = false;
-
-
         public string UserId { get; set; }
 
         [ForeignKey("UserId")]

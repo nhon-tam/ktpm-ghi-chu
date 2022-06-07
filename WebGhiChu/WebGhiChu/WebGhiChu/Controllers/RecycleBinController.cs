@@ -36,7 +36,7 @@ namespace WebGhiChu.Controllers
         [Authorize]
         public async Task<IActionResult> GetAll()
         {
-            return new JsonResult(await _context.Notes.Where(u=>u.IsDeleted == true && u.IsDeletedForever == false).ToListAsync());
+            return new JsonResult(await _context.Notes.Where(u=>u.IsDeleted == true).ToListAsync());
         }
 
         [HttpGet("Search")]
@@ -46,11 +46,10 @@ namespace WebGhiChu.Controllers
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
             if (String.IsNullOrWhiteSpace(Filter))
             {
-                return new JsonResult(_context.Notes.Where(u => u.IsDeleted == true && u.IsDeletedForever == false));
+                return new JsonResult(_context.Notes.Where(u => u.IsDeleted == true));
             }
             var list = await _context.Notes
                 .Include(x => x.User)
-                .Include(x => x.Priority)
                 .Where(x => x.IsDeleted == true
                     && x.UserId.Equals(userId)
                     && (x.Title.Contains(Filter) || x.Description.Contains(Filter))
@@ -77,7 +76,6 @@ namespace WebGhiChu.Controllers
             note.IsDeleted = false;
             note.DateDeleted = null;
             note.DateUpdated = nowTime;
-            note.IsSynced = false;
             _context.Notes.Update(note);
             await _context.SaveChangesAsync();
             return new JsonResult("Success");
@@ -99,9 +97,7 @@ namespace WebGhiChu.Controllers
                 });
             }
 
-            note.IsDeletedForever = true;
-            note.IsSynced = false;
-            _context.Notes.Update(note);
+            _context.Notes.Remove(note);
             _context.SaveChanges();
             return new JsonResult("Success");
 
@@ -115,9 +111,7 @@ namespace WebGhiChu.Controllers
             List<Note> notes = await _context.Notes.Where(u => u.IsDeleted == true && u.DateDeleted.Value.AddDays(7) <= DateTime.Now).ToListAsync();
             foreach (var note in notes)
             {
-                note.IsDeletedForever = true;
-                note.IsSynced = false;
-                _context.Notes.Update(note);
+                _context.Notes.Remove(note);
                 await _context.SaveChangesAsync();
             }
             
@@ -132,9 +126,7 @@ namespace WebGhiChu.Controllers
             List<Note> notes = await _context.Notes.Where(u => u.IsDeleted == true).ToListAsync();
             foreach (var note in notes)
             {
-                note.IsDeletedForever = true;
-                note.IsSynced = false;
-                _context.Notes.Update(note);
+                _context.Notes.Remove(note);
                 await _context.SaveChangesAsync();
             }
             return new JsonResult("Success");

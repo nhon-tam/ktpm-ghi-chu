@@ -55,7 +55,6 @@ namespace WebGhiChu.Controllers
             {
                 var listTodo = await _context.Todos
                 .Where(x => x.UserId.Equals(userId)
-                 && x.IsDeletedForever == false
                 )
                 .OrderBy(x => x.Status)
                 .ThenByDescending(x => x.DateUpdated)
@@ -68,7 +67,6 @@ namespace WebGhiChu.Controllers
                 .Where(x => 
                     x.UserId.Equals(userId)
                     && x.Task.Contains(Filter)
-                    && x.IsDeletedForever == false
                     ).ToListAsync();
             return new JsonResult(list);
         }
@@ -87,8 +85,6 @@ namespace WebGhiChu.Controllers
                 });
             }
 
-            todo.IsDeletedForever = true;
-            todo.IsSynced = false;
             _context.Todos.Update(todo);
             await _context.SaveChangesAsync();
 
@@ -135,7 +131,6 @@ namespace WebGhiChu.Controllers
             oldTodo.Task = Todo.Task;
             oldTodo.Status = Todo.Status;
             oldTodo.DateUpdated = nowTime;
-            oldTodo.IsSynced = false;
 
             _context.Todos.Update(oldTodo);
             await _context.SaveChangesAsync();
@@ -169,8 +164,6 @@ namespace WebGhiChu.Controllers
                 Status = false,
                 UserId = userId,
                 Task = Task,
-                IsSynced = false,
-                IsDeletedForever = false
                 
             };
 

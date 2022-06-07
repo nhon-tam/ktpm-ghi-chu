@@ -36,58 +36,19 @@ export class DeleteNoteItemComponent implements OnInit {
 
   changeStyleNote(){
 
-    switch(this.note?.priorityId){
-      case 2:{
-        if(this.listLayout){
-          this.styleItem = {
-            'width': '40rem'
-            ,'height': '14rem'
-            , 'margin-top': '20px'
-            ,'overflow': 'auto'
-            ,'background-color': 'rgb(252, 252, 118)'};
-        }
-        else{
-          this.styleItem ={'width': '17rem'
+    if(this.listLayout){
+      this.styleItem = {
+        'width': '40rem'
+        ,'height': '14rem'
+        , 'margin-top': '20px'
+        ,'overflow': 'auto'
+        };
+    }
+    else{
+      this.styleItem ={'width': '17rem'
           , 'margin': '0.3em'
           , 'margin-top': '1em'
-          ,'background-color': 'rgb(252, 252, 118)'};
-        }
-        break;
-      };
-      case 3:{
-        if(this.listLayout){
-          this.styleItem = {
-            'width': '40rem'
-            ,'height': '14rem'
-            , 'margin-top': '20px'
-            ,'overflow': 'auto'
-            ,'background-color': 'rgb(249, 161, 124)'};
-        }
-        else{
-          this.styleItem ={'width': '17rem'
-          , 'margin': '0.3em'
-          , 'margin-top': '1em'
-          ,'background-color': 'rgb(249, 161, 124)'};
-        }
-        break;
-      };
-      default:{
-        if(this.listLayout){
-          this.styleItem = {
-            'width': '40rem'
-            ,'height': '14rem'
-            , 'margin-top': '20px'
-            ,'overflow': 'auto'
-            ,'background-color': 'rgb(133, 254, 122)'};
-        }
-        else{
-          this.styleItem ={'width': '17rem'
-          , 'margin': '0.3em'
-          , 'margin-top': '1em'
-          ,'background-color': 'rgb(133, 254, 122)'};
-        }
-        break;
-      }
+          };
     }
   }
 

@@ -33,13 +33,13 @@ namespace WebGhiChu.Controllers
         }
 
 
-        [HttpGet("GetAll")]
-        [Authorize]
-        public async Task<IActionResult> GetAllPriority()
-        {
-            var listPriority = await _context.Priorities.Include(x => x.Notes).ToListAsync();
+        //[HttpGet("GetAll")]
+        //[Authorize]
+        //public async Task<IActionResult> GetAllPriority()
+        //{
+        //    var listPriority = await _context.Priorities.Include(x => x.Notes).ToListAsync();
 
-            return Ok(listPriority);
-        }
+        //    return Ok(listPriority);
+        //}
     }
 }

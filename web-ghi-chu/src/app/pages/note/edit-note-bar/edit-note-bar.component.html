@@ -7,12 +7,12 @@
 
     </ng-template>
 
-    <div class="row">
+    <!-- <div class="row">
       <div *ngFor="let priority of priorities" class="field-checkbox col">
         <p-radioButton name="category" [value]="priority" [(ngModel)]="selectedPriority"></p-radioButton>
         <label [for]="priority?.key">{{priority?.name}}</label>
       </div>
-    </div>
+    </div> -->
 
 
     <!-- <input class="hide-border" type="text"  pInputText placeholder="Tạo ghi chú..."/> -->
@@ -20,9 +20,9 @@
     <ng-template pTemplate="footer">
       <div class="d-flex justify-content-between">
         <div class="list-icon">
-          <button pButton pRipple type="button" icon="pi pi-bell" class="p-button-rounded p-button-text"></button>
+          <!-- <button pButton pRipple type="button" icon="pi pi-bell" class="p-button-rounded p-button-text"></button>
           <button pButton pRipple type="button" icon="pi pi-share-alt" class="p-button-rounded p-button-text"></button>
-          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text"></button> -->
         </div>
         <div class="close-edit red d-flex">
           <button pButton pRipple type="button" label="Đóng" (click)="saveAndClose($event)" class="p-button-secondary p-button-text"></button>
