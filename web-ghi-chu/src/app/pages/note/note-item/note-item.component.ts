@@ -1,3 +1,4 @@
+import { debounceTime } from 'rxjs/operators';
 import { CommonService } from './../../../shared/services/common.service';
 import { UsersService } from './../../../shared/services/users.service';
 import { UserProfileService } from './../../../shared/services/user-profile.service';
@@ -263,7 +264,15 @@ export class NoteItemComponent implements OnInit {
 
   searchUser(event:any) {
     this.getUsers(event.query).subscribe((data: any)=>{
-      this.usernameResults = data?.users;
+      var users: any[] = data?.users;
+
+      users.forEach(element => {
+        if(this.userCollabList.find(f => f.user?.id === element?.id)){
+          users = users.filter(f => f != element);
+        }
+      });
+      this.usernameResults = users;
+
     })
   }
 
@@ -338,7 +347,7 @@ export class NoteItemComponent implements OnInit {
   }
 
   getUsers(name?: string){
-    return this.usersService.getUsersByName(name);
+    return this.usersService.getUsersByName(name).pipe(debounceTime(1000));
   }
 
   CreateCollabUsersFromServer(noteId: string, users: any[]){
