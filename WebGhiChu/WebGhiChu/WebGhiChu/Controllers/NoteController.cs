@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebGhiChu.Data;
 using WebGhiChu.Data.Models;
+using WebGhiChu.Data.ViewModels;
 
 namespace WebGhiChu.Controllers
 {
@@ -281,6 +282,59 @@ namespace WebGhiChu.Controllers
             });
 
         }
+
+        [HttpPost("ChangeColor")]
+        [Authorize]
+        public async Task<IActionResult> ChangeColor(ChangeColorVM ChangeColorVM) {
+            var note = await _context.Notes.FindAsync(ChangeColorVM.NoteId);
+            if (note == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Ghi chú không tồn tại!",
+                    Success = false,
+                });
+            }
+
+            note.Color = ChangeColorVM.Color;
+
+            _context.Notes.Update(note);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                Message = "Cập nhật thành công",
+                Success = true,
+            });
+        }
+
+        [HttpPut("Clone")]
+        [Authorize]
+        public async Task<IActionResult> Clone(CloneVM Clone)
+        {
+            var note = await _context.Notes.FindAsync(Clone.NoteId);
+            if (note == null)
+            {
+                return BadRequest(new
+                {
+                    Message = "Ghi chú không tồn tại!",
+                    Success = false,
+                });
+            }
+
+            note.NoteId = Guid.NewGuid();
+
+            await _context.Notes.AddAsync(note);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                Message = "Tạo bản sao thành công",
+                Success = true,
+            });
+        }
+
+
 
         [HttpGet("GetCollabUsers")]
         [Authorize]

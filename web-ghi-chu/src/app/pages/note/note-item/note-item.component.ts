@@ -5,7 +5,7 @@ import { UserProfileService } from './../../../shared/services/user-profile.serv
 import { CollabRequest, NoteService } from './../../../shared/services/note.service';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NoteRequest } from 'src/app/shared/models/note-request.model';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { PriorityRadio } from '../edit-note-bar/edit-note-bar.component';
 // import { PriorityService } from 'src/app/shared/services/priority.service';
 
@@ -25,6 +25,7 @@ export interface UserCollab{
 export class NoteItemComponent implements OnInit {
   @Input() noteItem: any;
   @Output() changeData: EventEmitter<any>;
+
 
   /**
    * Chu so huu note
@@ -47,6 +48,10 @@ export class NoteItemComponent implements OnInit {
 
   readonly ICON_MINUS = 'fa fa-minus';
   readonly ICON_PLUS = 'fa fa-plus';
+
+  //Note Color
+
+  noteColor: string = '#FFFFFF';
 
 
   //Priority
@@ -71,6 +76,8 @@ export class NoteItemComponent implements OnInit {
 
   styleItem: any;
 
+  editStyleModal: any;
+
 
   //Common
   listLayout: boolean;
@@ -82,7 +89,7 @@ export class NoteItemComponent implements OnInit {
     private usersService: UsersService,
     private messageService: MessageService,
     // private priorityService: PriorityService,
-    private commonService: CommonService
+    private commonService: CommonService,
     ) {
     this.changeData = new EventEmitter();
     this.displayModal = false;
@@ -100,6 +107,7 @@ export class NoteItemComponent implements OnInit {
 
   ngOnInit(): void {
     // this.initPriorities();
+
     this.commonService.listLayout$.subscribe((active)=>{
       this.listLayout = active;
       this.changeStyleNote();
@@ -124,17 +132,40 @@ export class NoteItemComponent implements OnInit {
         ,'height': '14rem'
         , 'margin-top': '20px'
         ,'overflow': 'auto'
+        ,'background-color' : this.noteItem?.color
         };
     }
     else{
       this.styleItem ={'width': '17rem'
           , 'margin': '0.3em'
           , 'margin-top': '1em'
+          ,'background-color' : this.noteItem?.color
           };
     }
 
   }
 
+  //Change color
+  onChangeNoteColor(noteColor: any){
+    const changeColorVM = {
+      noteId: this.noteItem?.noteId,
+      color: noteColor
+    }
+    this.noteService.changeColor(changeColorVM).subscribe((res)=>{
+      this.changeData.emit();
+    })
+
+  }
+
+  cloneNote(){
+    const clone = {
+      noteId: this.noteItem?.noteId
+    }
+    this.noteService.clone(clone).subscribe((res)=>{
+      this.changeData.emit();
+
+    })
+  }
 
 
   removeNote(){

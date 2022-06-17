@@ -30,6 +30,8 @@ namespace WebGhiChu.Data.Models
 
         public string UserId { get; set; }
 
+        public string Color { get; set; } = "#FFFFFF";
+
 
         [ForeignKey("UserId")]
 

@@ -1,5 +1,5 @@
 import { NoteRequest } from './../models/note-request.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -57,6 +57,16 @@ export class NoteService {
 
   search(filter: string){
     return this.http.get(`${environment.apiUrl}/api/Note/Search?Filter=${filter}`, {headers: this._sharedHeaders});
+  }
+
+  changeColor(changeColorVM: any){
+
+    return this.http.post(`${environment.apiUrl}/api/Note/ChangeColor`,changeColorVM,{headers: this._sharedHeaders});
+  }
+
+  clone(clone: any){
+    return this.http.put(`${environment.apiUrl}/api/Note/Clone`,clone,{headers: this._sharedHeaders});
+
   }
 
 }

@@ -47,30 +47,6 @@ namespace WebGhiChu.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DeletedUIDs",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DeletedUIDs", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Priorities",
-                columns: table => new
-                {
-                    PriorityId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Priorities", x => x.PriorityId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -177,6 +153,32 @@ namespace WebGhiChu.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notes",
+                columns: table => new
+                {
+                    NoteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notes", x => x.NoteId);
+                    table.ForeignKey(
+                        name: "FK_Notes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Todos",
                 columns: table => new
                 {
@@ -185,7 +187,6 @@ namespace WebGhiChu.Migrations
                     Task = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsSynced = table.Column<bool>(type: "bit", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -200,39 +201,6 @@ namespace WebGhiChu.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notes",
-                columns: table => new
-                {
-                    NoteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DateDeleted = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true),
-                    IsSynced = table.Column<bool>(type: "bit", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PriorityId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notes", x => x.NoteId);
-                    table.ForeignKey(
-                        name: "FK_Notes_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Notes_Priorities_PriorityId",
-                        column: x => x.PriorityId,
-                        principalTable: "Priorities",
-                        principalColumn: "PriorityId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserNotes",
                 columns: table => new
                 {
@@ -241,8 +209,7 @@ namespace WebGhiChu.Migrations
                     NoteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true),
                     DateUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsSynced = table.Column<bool>(type: "bit", nullable: true)
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -260,21 +227,6 @@ namespace WebGhiChu.Migrations
                         principalColumn: "NoteId",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.InsertData(
-                table: "Priorities",
-                columns: new[] { "PriorityId", "Name" },
-                values: new object[] { 1, "Thấp" });
-
-            migrationBuilder.InsertData(
-                table: "Priorities",
-                columns: new[] { "PriorityId", "Name" },
-                values: new object[] { 2, "Trung bình" });
-
-            migrationBuilder.InsertData(
-                table: "Priorities",
-                columns: new[] { "PriorityId", "Name" },
-                values: new object[] { 3, "Cao" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -316,11 +268,6 @@ namespace WebGhiChu.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notes_PriorityId",
-                table: "Notes",
-                column: "PriorityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Notes_UserId",
                 table: "Notes",
                 column: "UserId");
@@ -359,9 +306,6 @@ namespace WebGhiChu.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DeletedUIDs");
-
-            migrationBuilder.DropTable(
                 name: "Todos");
 
             migrationBuilder.DropTable(
@@ -375,9 +319,6 @@ namespace WebGhiChu.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Priorities");
         }
     }
 }

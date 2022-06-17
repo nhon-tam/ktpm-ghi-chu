@@ -10,8 +10,8 @@ using WebGhiChu.Data;
 namespace WebGhiChu.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220601045942_add-field")]
-    partial class addfield
+    [Migration("20220617012851_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -223,6 +223,9 @@ namespace WebGhiChu.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -241,15 +244,6 @@ namespace WebGhiChu.Migrations
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDeletedForever")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsSynced")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PriorityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -258,43 +252,9 @@ namespace WebGhiChu.Migrations
 
                     b.HasKey("NoteId");
 
-                    b.HasIndex("PriorityId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Notes");
-                });
-
-            modelBuilder.Entity("WebGhiChu.Data.Models.Priority", b =>
-                {
-                    b.Property<int>("PriorityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PriorityId");
-
-                    b.ToTable("Priorities");
-
-                    b.HasData(
-                        new
-                        {
-                            PriorityId = 1,
-                            Name = "Thấp"
-                        },
-                        new
-                        {
-                            PriorityId = 2,
-                            Name = "Trung bình"
-                        },
-                        new
-                        {
-                            PriorityId = 3,
-                            Name = "Cao"
-                        });
                 });
 
             modelBuilder.Entity("WebGhiChu.Data.Models.Todo", b =>
@@ -308,12 +268,6 @@ namespace WebGhiChu.Migrations
 
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeletedForever")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsSynced")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -344,12 +298,6 @@ namespace WebGhiChu.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool?>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeletedForever")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsSynced")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("NoteId")
@@ -420,17 +368,9 @@ namespace WebGhiChu.Migrations
 
             modelBuilder.Entity("WebGhiChu.Data.Models.Note", b =>
                 {
-                    b.HasOne("WebGhiChu.Data.Models.Priority", "Priority")
-                        .WithMany("Notes")
-                        .HasForeignKey("PriorityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebGhiChu.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Priority");
 
                     b.Navigation("User");
                 });
@@ -469,11 +409,6 @@ namespace WebGhiChu.Migrations
             modelBuilder.Entity("WebGhiChu.Data.Models.Note", b =>
                 {
                     b.Navigation("UserNotes");
-                });
-
-            modelBuilder.Entity("WebGhiChu.Data.Models.Priority", b =>
-                {
-                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,3 +1,5 @@
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NgxColorsModule } from 'ngx-colors';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { AvatarModule } from 'primeng/avatar';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
@@ -25,6 +27,7 @@ import { CollaboratorComponent } from './note-item/collaborator/collaborator.com
 import { EditNoteModalComponent } from './note-item/edit-note-modal/edit-note-modal.component';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import {ContextMenuModule} from 'primeng/contextmenu';
 
 @NgModule({
   declarations: [
@@ -56,7 +59,11 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     AvatarGroupModule,
     AutoCompleteModule,
     RadioButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxColorsModule,
+    ContextMenuModule,
+    NzButtonModule,
+    NzDropDownModule
   ],
   exports: [
     NoteComponent,

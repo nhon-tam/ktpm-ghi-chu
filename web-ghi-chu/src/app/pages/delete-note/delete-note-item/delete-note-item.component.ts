@@ -42,12 +42,16 @@ export class DeleteNoteItemComponent implements OnInit {
         ,'height': '14rem'
         , 'margin-top': '20px'
         ,'overflow': 'auto'
+        ,'background-color' : this.note?.color
+
         };
     }
     else{
       this.styleItem ={'width': '17rem'
           , 'margin': '0.3em'
           , 'margin-top': '1em'
+          ,'background-color' : this.note?.color
+
           };
     }
   }

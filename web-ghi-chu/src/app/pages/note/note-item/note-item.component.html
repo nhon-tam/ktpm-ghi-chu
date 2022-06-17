@@ -13,13 +13,42 @@
         <p class="description">{{noteItem?.description}}</p>
       </div>
       <ng-template pTemplate="footer">
-        <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
-        <button pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+        <div class="d-flex justify-content-between">
+          <div>
+            <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
+            <button pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+            <!-- <button pButton pRipple type="button" icon="pi pi-palette" class="p-button-rounded p-button-text"></button> -->
+          </div>
+          <div>
+            <button pButton pRipple nz-dropdown icon="pi pi-ellipsis-v" [nzDropdownMenu]="menu" class="p-button-rounded p-button-text" nzPlacement="bottomRight"></button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="cloneNote()">Tạo bản sao</li>
+                <li nz-menu-item>Thêm nhãn</li>
+                <li nz-menu-item><ngx-colors
+                  ngx-colors-trigger
+                  [hideTextInput]="true"
+                  [hideColorPicker]="false"
+                  (change)="onChangeNoteColor($event)"
+                  acceptLabel="Chọn"
+                  cancelLabel="Hủy"
+                ></ngx-colors>
+                Thêm màu
+
+              </li>
+              </ul>
+            </nz-dropdown-menu>
+          </div>
+
+        <!-- <button #more pButton pRipple type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text"></button> -->
+
+      </div>
+
+
       </ng-template>
-    </p-card>
+  </p-card>
 
-    <p-card *ngIf="listLayout" [draggable]="false"
-
+  <p-card *ngIf="listLayout" [draggable]="false"
     [style]="styleItem">
       <ng-template pTemplate="header">
         <div class="d-flex justify-content-between">
@@ -31,8 +60,17 @@
         <p class="description">{{noteItem?.description}}</p>
       </div>
       <ng-template pTemplate="footer">
-        <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
-        <button pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+        <div class="d-flex">
+          <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
+          <button pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+          <!-- <button pButton pRipple type="button" icon="pi pi-palette" class="p-button-rounded p-button-text"></button> -->
+          <ngx-colors
+            ngx-colors-trigger
+            [hideTextInput]="true"
+            [hideColorPicker]="false"
+
+          ></ngx-colors>
+        </div>
       </ng-template>
     </p-card>
   </div>
@@ -86,7 +124,7 @@
 
 
 <nz-spin [nzSpinning]="isSpinning" >
-  <p-dialog (onHide)="onHideModal()" [(visible)]="displayModal" [modal]="true" [style]="{width: '586px', height: '500px'}">
+  <p-dialog (onHide)="onHideModal()" [(visible)]="displayModal" [modal]="true" [style]="{width: '586px', height: '500px', 'background-color': this.noteItem?.color}">
     <ng-template pTemplate="header">
         <textarea class="hide-border title-edit" name="title" [(ngModel)]="noteRequest.title" placeholder="Tiêu đề" rows="1"  pInputTextarea [autoResize]="true"></textarea>
     </ng-template>
