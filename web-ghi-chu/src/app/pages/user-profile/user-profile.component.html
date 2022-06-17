@@ -1,1 +1,35 @@
-<p>user-profile works!</p>
+<h2 class="d-flex justify-content-center">Thông tin người dùng</h2>
+<br>
+<div class="d-flex justify-content-center">
+  <form nz-form [formGroup]="validateForm" style="width: 50%;">
+    <nz-form-item>
+      <nz-form-label [nzSm]="5">Tên người dùng</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <input [value]="user.userName" nz-input [disabled]="true"/>
+        <nz-input-group>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="5">Email</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-group>
+          <input formControlName="email" [value]="user.email" nz-input />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="5">Số điện thoại</nz-form-label>
+      <nz-form-control [nzSm]="16" [nzXs]="24">
+        <nz-input-group>
+          <input formControlName="phoneNumber" [value]="user.phoneNumber" nz-input />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" (click)="submitForm()">Chỉnh sửa</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

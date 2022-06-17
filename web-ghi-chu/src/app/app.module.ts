@@ -1,3 +1,4 @@
+import { UserProfileModule } from './pages/user-profile/user-profile.module';
 import { CommonService } from './shared/services/common.service';
 import { TodoListModule } from './pages/todo-list/todo-list.module';
 import { NotificationModule } from './pages/notification/notification.module';
@@ -53,6 +54,7 @@ export function httpTranslateLoaderFactory(http: HttpClient) {
     NotificationModule,
     TodoListRoutingModule,
     TodoListModule,
+    UserProfileModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

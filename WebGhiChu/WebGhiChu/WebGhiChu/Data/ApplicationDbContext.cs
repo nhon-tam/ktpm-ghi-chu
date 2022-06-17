@@ -43,6 +43,7 @@ namespace WebGhiChu.Data
         public virtual DbSet<Note> Notes { get; set; }
 
         public virtual DbSet<ApplicationUser> Users { get; set; }
+        public virtual DbSet<Avatars> Avatars { get; set; }
 
         public virtual DbSet<Todo> Todos { get; set; }
         public virtual DbSet<UserNote> UserNotes { get; set; }

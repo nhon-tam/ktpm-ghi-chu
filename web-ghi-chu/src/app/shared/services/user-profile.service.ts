@@ -23,4 +23,7 @@ export class UserProfileService {
     return this.http.post(`${environment.apiUrl}/api/Account/login`, formData, {headers: this._sharedHeaders, reportProgress: true, observe: 'events'});
   }
 
+  editUserProfile(user: any){
+    return this.http.post(`${environment.apiUrl}/api/UserProfile/editProfile`,user, {headers: this._sharedHeaders});
+  }
 }

@@ -32,13 +32,13 @@ export class DashboardNoteComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserProfile();
-    this.commonService.listLayout$.subscribe((active)=>{
+    this.commonService.listLayout$.subscribe((active: any)=>{
       this.listLayout = active;
     })
   }
 
   loadUserProfile(){
-    this.getUserProfileFromServer().subscribe((res)=>{
+    this.getUserProfileFromServer().subscribe((res: any)=>{
       this.userProfile = res;
     })
   }
@@ -56,7 +56,7 @@ export class DashboardNoteComponent implements OnInit {
    * Chưa hoàn thiện, cập nhật sau
    */
   showUploadAvatarModal(){
-    // this.displayModal = true;
+    this.displayModal = true;
   }
 
 
