@@ -4,6 +4,7 @@ import { UserProfileService } from './../../shared/services/user-profile.service
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user-profile',
@@ -56,5 +57,6 @@ export class UserProfileComponent implements OnInit {
       phoneNumber:[null],
     });
   }
+
 
 }

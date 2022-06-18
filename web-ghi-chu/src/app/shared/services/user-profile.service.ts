@@ -1,3 +1,4 @@
+import { debounceTime } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -19,11 +20,18 @@ export class UserProfileService {
     return this.http.get(`${environment.apiUrl}/api/UserProfile`, {headers: this._sharedHeaders});
   }
 
-  uploadAvatar(formData: any){
-    return this.http.post(`${environment.apiUrl}/api/Account/login`, formData, {headers: this._sharedHeaders, reportProgress: true, observe: 'events'});
+  uploadAvatar(file: FormData){
+    return this.http
+    .post(`${environment.apiUrl}/api/UserProfile/UploadAvatar`,file,{
+      responseType: 'json'
+    }).pipe(debounceTime(1000));
   }
 
   editUserProfile(user: any){
     return this.http.post(`${environment.apiUrl}/api/UserProfile/editProfile`,user, {headers: this._sharedHeaders});
+  }
+
+  getAvatar(){
+    return this.http.get(`${environment.apiUrl}/api/UserProfile/getAvatar`, {headers: this._sharedHeaders});
   }
 }

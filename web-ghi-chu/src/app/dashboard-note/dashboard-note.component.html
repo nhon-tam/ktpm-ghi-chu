@@ -90,11 +90,11 @@
 
 
         <div class="pull-right info">
-          <span class="ml-2" nzTrigger="click" nz-dropdown [nzDropdownMenu]="menu"><p-avatar icon="pi pi-user" shape="circle" styleClass="image-info" size="large"></p-avatar></span>
+          <span class="ml-2" nzTrigger="click" nz-dropdown [nzDropdownMenu]="menu"><p-avatar [image]="this.Url" shape="circle" styleClass="image-info" size="large"></p-avatar></span>
           <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul style="border-radius: 5px; margin-top: 10px;" nz-menu>
                   <li class="avatar d-flex justify-content-center" (click)="showUploadAvatarModal()">
-                      <p-avatar p-avatar icon="pi pi-user" [styleClass]="'image-avatar'" shape="circle" size="xlarge"></p-avatar>
+                      <p-avatar [image]="this.Url" p-avatar [styleClass]="'image-avatar'" shape="circle" size="xlarge"></p-avatar>
                   </li>
                   <li class="d-flex justify-content-center">
                     <h4>{{userProfile?.userName}}</h4>
@@ -124,5 +124,5 @@
   <ng-template pTemplate="header">
     <h5>Ảnh hồ sơ</h5>
   </ng-template>
-  <app-upload-avatar></app-upload-avatar>
+  <app-upload-avatar (loadDataEmit)="LoadUserAvatar()" [Url] = "Url"></app-upload-avatar>
 </p-dialog>

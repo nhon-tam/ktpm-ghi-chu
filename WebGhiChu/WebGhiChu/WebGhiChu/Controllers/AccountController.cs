@@ -41,13 +41,20 @@ namespace WebGhiChu.Controllers
         {
             var applicationUser = new ApplicationUser()
             {
-                UserName = register.Username,
+                UserName = register.Username,    
             };
 
             try
             {
                 var result = await _userManager.CreateAsync(applicationUser, register.Password);
-
+                var avatar = new Avatars()
+                {
+                   Id = Guid.NewGuid(),
+                   AvatarUrl = "UserDefault.png",
+                   UserId  = applicationUser.Id,
+                };
+                _context.Avatars.Add(avatar);
+                _context.SaveChanges();
                 return Ok(result);
             }
             catch(Exception ex)

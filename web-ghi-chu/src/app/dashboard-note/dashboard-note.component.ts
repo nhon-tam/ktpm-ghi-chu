@@ -2,7 +2,8 @@ import { CommonService } from '../shared/services/common.service';
 import { UserProfileService } from './../shared/services/user-profile.service';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard-note',
@@ -20,6 +21,8 @@ export class DashboardNoteComponent implements OnInit {
   imageSrc: any;
   searchFilter: string;
   listLayout: boolean;
+  Url = environment.apiUrl + '//Images//';
+  @Output() loadDataEmit: EventEmitter<any>;
 
   constructor(private router: Router,
               private userProfileService: UserProfileService,
@@ -28,6 +31,7 @@ export class DashboardNoteComponent implements OnInit {
     this.displayModal = false;
     this.searchFilter = '';
     this.listLayout = false;
+    this.loadDataEmit = new EventEmitter();
   }
 
   ngOnInit(): void {
@@ -35,6 +39,7 @@ export class DashboardNoteComponent implements OnInit {
     this.commonService.listLayout$.subscribe((active: any)=>{
       this.listLayout = active;
     })
+    this.LoadUserAvatar();
   }
 
   loadUserProfile(){
@@ -90,5 +95,18 @@ export class DashboardNoteComponent implements OnInit {
     localStorage.removeItem('token');
     this.router.navigateByUrl('/login');
   }
+
+  getAvatar(){
+    return this.userProfileService.getAvatar()
+  }
+
+  LoadUserAvatar(){
+    this.getAvatar().subscribe((item:any)=>{
+      this.Url = this.Url + item
+    });
+    this.Url = environment.apiUrl + '//Images//';
+    this.uploadedFiles = [];
+  }
+
 
 }

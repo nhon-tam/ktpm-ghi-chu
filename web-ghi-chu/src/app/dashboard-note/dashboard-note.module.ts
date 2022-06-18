@@ -1,3 +1,5 @@
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CommonService } from '../shared/services/common.service';
 import { ToastModule } from 'primeng/toast';
 import { NotificationComponent } from './../pages/notification/notification.component';
@@ -53,7 +55,9 @@ import { InputTextModule } from 'primeng/inputtext';
     FileUploadModule,
     NzUploadModule,
     ToastModule,
-    InputTextModule
+    InputTextModule,
+    NzButtonModule,
+    NzSpinModule
   ],
   exports: [
     DashboardNoteComponent,

@@ -1,4 +1,9 @@
-:host ::ng-deep .avatar-uploader > .ant-upload {
-  width: 128px;
-  height: 128px;
+.btn-deleteFile{
+  border-radius: 2px;
+  margin-left: 20px;
+  font-weight: bold;
+  padding: 5px 10px;
+  background: red;
+  color: #fff;
+  cursor: pointer;
 }

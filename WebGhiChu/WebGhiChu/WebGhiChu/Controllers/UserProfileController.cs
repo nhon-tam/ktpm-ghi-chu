@@ -61,14 +61,24 @@ namespace WebGhiChu.Controllers
 
                         if (user != null)
                         {
-                            var avatrUser = new Avatars()
+                            var userAvatar = _context.Avatars.FirstOrDefault(s=>s.UserId.Equals(user.Id));
+                            if(userAvatar != null)
                             {
-                                Id = Guid.NewGuid(),
-                                AvatarUrl= fileName,
-                                UserId = user.Id
-                            };
-                            _context.Avatars.Add(avatrUser);
-                            _context.SaveChanges();
+                                userAvatar.AvatarUrl = fileName; 
+                                _context.Avatars.Update(userAvatar);
+                                _context.SaveChanges();
+                            }
+                            else
+                            {
+                                Avatars avatars = new Avatars()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    AvatarUrl = fileName,
+                                    UserId =   user.Id,
+                                };
+                                _context.Avatars.Add(userAvatar);
+                                _context.SaveChanges();
+                            }
                         }
                         file.CopyTo(stream);
                     }
@@ -87,13 +97,25 @@ namespace WebGhiChu.Controllers
         }
 
         [HttpGet("getAvatar")]
-        [Authorize]
+
         public async Task<IActionResult> GetAvatarByUserId()
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
-            var avatrUser = _context.Avatars.FirstOrDefault(u => u.UserId.Equals(userId));
+            var user = await _userManager.FindByIdAsync(userId);
 
-            return new JsonResult(avatrUser);
+            if (user != null)
+            {
+                var avatar = _context.Avatars.FirstOrDefault(s=>s.UserId.Equals(user.Id));
+                if (avatar != null)
+                {
+                    return new JsonResult(avatar.AvatarUrl);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            else { return BadRequest(); }
         }
 
         [HttpGet]
@@ -102,13 +124,22 @@ namespace WebGhiChu.Controllers
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
             var user = await _userManager.FindByIdAsync(userId);
-            return Ok(new
+            if(user != null)
             {
-                UserId = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-            });
+                var userProfile = new
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                };
+                return new JsonResult(userProfile);
+            }
+            else
+            {
+                return new JsonResult(null);
+            }
+            
         }
 
         [HttpPost("editProfile")]
