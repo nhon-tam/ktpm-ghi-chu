@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { NoteRequest } from 'src/app/shared/models/note-request.model';
 import { MenuItem, MessageService } from 'primeng/api';
 import { PriorityRadio } from '../edit-note-bar/edit-note-bar.component';
+import { environment } from 'src/environments/environment';
 // import { PriorityService } from 'src/app/shared/services/priority.service';
 
 export interface UserCollab{
@@ -26,6 +27,8 @@ export class NoteItemComponent implements OnInit {
   @Input() noteItem: any;
   @Output() changeData: EventEmitter<any>;
 
+
+  Url = environment.apiUrl + '//Images//';
 
   /**
    * Chu so huu note
@@ -107,14 +110,23 @@ export class NoteItemComponent implements OnInit {
 
   ngOnInit(): void {
     // this.initPriorities();
-
+    this.LoadUserAvatar();
     this.commonService.listLayout$.subscribe((active)=>{
       this.listLayout = active;
       this.changeStyleNote();
 
     })
   }
+  getAvatar(){
+    return this.userProfileService.getAvatar()
+  }
 
+  LoadUserAvatar(){
+    this.getAvatar().subscribe((item:any)=>{
+      this.Url = this.Url + item
+    });
+    this.Url = environment.apiUrl + '//Images//';
+  }
   // initPriorities(){
   //   this.priorityService.getAllPriority().subscribe((data: any[])=>{
   //     this.priorities = data.map((item)=>({
