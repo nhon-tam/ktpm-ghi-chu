@@ -17,17 +17,17 @@
 }
 
 .title{
-  font-weight: bold;
-  font-size: 30px;
-  margin-left: 20px;
-  white-space: nowrap;
+  /* font-weight: bold; */
+  font-size: 22px;
+  /* white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
+  word-wrap: break-word;
 }
+
 .title-edit{
   font-weight: bold;
-  font-size: 30px;
-
+  font-size: 22px;
 }
 .description{
   font-size: 22px;

@@ -85,7 +85,7 @@ namespace WebGhiChu.Controllers
                 });
             }
 
-            _context.Todos.Update(todo);
+            _context.Remove(todo);
             await _context.SaveChangesAsync();
 
             return Ok(new

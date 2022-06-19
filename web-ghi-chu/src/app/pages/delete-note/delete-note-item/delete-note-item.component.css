@@ -4,3 +4,11 @@
 .description{
   font-size: 22px;
 }
+.title{
+  /* font-weight: bold; */
+  font-size: 22px;
+  /* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+  word-wrap: break-word;
+}

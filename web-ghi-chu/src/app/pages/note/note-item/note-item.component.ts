@@ -38,9 +38,7 @@ export class NoteItemComponent implements OnInit {
   /**
    * priority
    */
-   selectedPriority: any;
 
-   priorities: PriorityRadio[]
 
 
   /**
@@ -103,8 +101,6 @@ export class NoteItemComponent implements OnInit {
     this.usersSelected = [];
     this.usernameResults= [];
     this.userCollabList = [];
-    this.priorities = [];
-    this.selectedPriority = null;
     this.listLayout = false;
   }
 
@@ -196,7 +192,6 @@ export class NoteItemComponent implements OnInit {
     // })
 
     this.noteRequest.noteId = this.noteItem?.noteId;
-    this.noteRequest.priorityId = this.selectedPriority.key;
     this.updateNoteToServer(this.noteRequest).subscribe((res)=>{
       console.log(this.noteRequest);
       this.displayModal = false;
@@ -263,7 +258,6 @@ export class NoteItemComponent implements OnInit {
       setTimeout(()=>{
         this.noteRequest.description = res?.description;
         this.noteRequest.title = res?.title;
-        this.selectedPriority = this.priorities.find(f => f.key == res?.priorityId);
         this.isSpinning = false;
       }, 1000)
     })

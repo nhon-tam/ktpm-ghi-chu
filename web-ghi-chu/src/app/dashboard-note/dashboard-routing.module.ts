@@ -35,8 +35,11 @@ const routes: Routes = [
       path: 'todo-list',
       component: TodoListComponent,
       canActivate: [AuthGuard]
+    },{
+      path: 'label/:name',
+      component: TodoListComponent,
+      canActivate: [AuthGuard]
     }
-
   ] },
   // { path: 'note', loadChildren: () => import('../pages/note/note.component').then(m => m.NoteComponent), canActivate: [AuthGuard] }
 ];

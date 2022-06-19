@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginRequest } from '../shared/models/login.model';
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
   errorMessage = "";
   constructor(
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
     this.modelLogin = {
       username: '',
@@ -26,14 +28,21 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
+    this.isSpinning = true;
     this.loginService.login(this.modelLogin).subscribe(
       (res: any)=>{
         localStorage.setItem('token', res?.token);
-        this.router.navigateByUrl('/dashboard');
+        this.isSpinning = false;
+        this.messageService.add({severity:'success', summary:'Đăng nhập thành công!', detail:'Bạn đã đăng nhập thành công tài khoản và mật khẩu'});
+        setTimeout(()=>{
+          this.router.navigateByUrl('/dashboard');
+        }, 1000);
       },
       (error)=>{
         if(error.status == 400){
-          this.errorMessage = "Tài khoản hoặc mật khẩu không đúng!"
+          this.errorMessage = "Tài khoản hoặc mật khẩu không đúng!";
+          this.isSpinning = false;
+
         }
       }
       )

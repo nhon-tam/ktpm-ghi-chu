@@ -3,13 +3,14 @@
   <p-card *ngIf="!listLayout" [draggable]="false"
 
     [style]="styleItem">
-      <ng-template pTemplate="header">
+      <!-- <ng-template pTemplate="header">
         <div class="d-flex justify-content-between">
           <b class="title">{{noteItem?.title}}</b>
           <button pButton pRipple (click)="showModal()" type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
         </div>
-      </ng-template>
-      <div class="text-elip">
+      </ng-template> -->
+      <div class="text-elip" (click)="showModal()">
+        <b class="title">{{noteItem?.title}}</b>
         <p class="description">{{noteItem?.description}}</p>
       </div>
       <ng-template pTemplate="footer">
@@ -50,13 +51,15 @@
 
   <p-card *ngIf="listLayout" [draggable]="false"
     [style]="styleItem">
-      <ng-template pTemplate="header">
+      <!-- <ng-template pTemplate="header">
         <div class="d-flex justify-content-between">
           <b class="title">{{noteItem?.title}}</b>
           <button pButton pRipple (click)="showModal()" type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
         </div>
-      </ng-template>
-      <div class="text-elip">
+      </ng-template> -->
+      <div class="text-elip" (click)="showModal()">
+        <b class="title">{{noteItem?.title}}</b>
+
         <p class="description">{{noteItem?.description}}</p>
       </div>
       <ng-template pTemplate="footer">
@@ -133,10 +136,10 @@
       <div class="row">
         <div class="d-flex justify-content-between">
 
-          <div *ngFor="let priority of priorities" class="field-checkbox">
+          <!-- <div *ngFor="let priority of priorities" class="field-checkbox">
             <p-radioButton name="category" [value]="priority" [(ngModel)]="selectedPriority"></p-radioButton>
             <label [for]="priority?.key">{{priority?.name}}</label>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="row">

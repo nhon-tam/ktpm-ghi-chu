@@ -1,7 +1,8 @@
 <div class="d-flex justify-content-center flex-wrap">
 
-  <p-card *ngIf="!listLayout" [header]="note?.title" [style]="styleItem">
+  <p-card *ngIf="!listLayout"  [style]="styleItem">
     <div class="text-elip">
+      <b class="title">{{note?.title}}</b>
       <p class="description">{{note?.description}}</p>
     </div>
     <ng-template pTemplate="footer">
