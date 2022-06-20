@@ -150,7 +150,7 @@ namespace WebGhiChu.Controllers
                                                     .OrderByDescending(x => x.DateCreated)
                                                     .ToListAsync();
 
-            var listCollabNote = await _context.UserNotes.Include(x => x.Note).Where(x => x.UserId.Equals(userId) && x.IsDeleted != true).ToListAsync();
+            var listCollabNote = await _context.UserNotes.Include(x => x.Note).Where(x => x.UserId.Equals(userId) && x.IsDeleted == false).ToListAsync();
             if(listCollabNote != null && listCollabNote.Count > 0)
             {
                 foreach(var collabNote in listCollabNote)

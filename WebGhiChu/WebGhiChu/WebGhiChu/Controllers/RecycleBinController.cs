@@ -78,7 +78,7 @@ namespace WebGhiChu.Controllers
 
             if (!note.UserId.Equals(userId))
             {
-                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.Equals(NoteId)).FirstOrDefaultAsync();
+                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
 
                 if (userNote == null)
                 {
@@ -133,9 +133,9 @@ namespace WebGhiChu.Controllers
 
             if (!note.UserId.Equals(userId))
             {
-                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.Equals(NoteId)).FirstOrDefaultAsync();
+                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
 
-                if(userNote == null)
+                if (userNote == null)
                 {
                     return BadRequest(new
                     {
@@ -191,8 +191,10 @@ namespace WebGhiChu.Controllers
 
         public async Task<IActionResult> DeleteAll()
         {
-            List<Note> notes = await _context.Notes.Where(u => u.IsDeleted == true).ToListAsync();
-            List<UserNote> userNotes = await _context.UserNotes.Where(u => u.IsDeleted == true).ToListAsync();
+            string userId = User.Claims.First(c => c.Type == "UserId").Value;
+
+            List<Note> notes = await _context.Notes.Where(u => u.IsDeleted == true && u.UserId.Equals(userId)).ToListAsync();
+            List<UserNote> userNotes = await _context.UserNotes.Where(u => u.IsDeleted == true && u.UserId.Equals(userId)).ToListAsync();
             foreach (var note in userNotes)
             {
                 _context.UserNotes.Remove(note);
