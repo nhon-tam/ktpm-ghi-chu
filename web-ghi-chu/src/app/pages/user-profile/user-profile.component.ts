@@ -26,6 +26,14 @@ export class UserProfileComponent implements OnInit {
       this.user = new User("","","","");
     }
 
+  ngOnInit(){
+    this.LoadUserInfo();
+    this.validateForm = this.fb.group({
+      email:[null],
+      phoneNumber:[null],
+    });
+  }
+
   getUserProfile(){
     return this.userprofileService.getUserProfile();
   }
@@ -50,13 +58,7 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  ngOnInit(){
-    this.LoadUserInfo();
-    this.validateForm = this.fb.group({
-      email:[null],
-      phoneNumber:[null],
-    });
-  }
+
 
 
 }
