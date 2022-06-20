@@ -14,6 +14,7 @@ export interface UserCollab{
   user: any;
   icon: string;
   hasError: boolean;
+  avatar: any;
 }
 
 
@@ -28,7 +29,8 @@ export class NoteItemComponent implements OnInit {
   @Output() changeData: EventEmitter<any>;
 
 
-  Url = environment.apiUrl + '//Images//';
+  UrlOwner = environment.apiUrl + '//Images//';
+  UrlUser = environment.apiUrl + '//Images//';
 
   /**
    * Chu so huu note
@@ -113,15 +115,14 @@ export class NoteItemComponent implements OnInit {
     })
 
   }
-  getAvatar(noteid:any){
+  getOwnerAvatar(noteid:any){
     return this.userProfileService.getOwnerAvatar(noteid)
   }
-
-  LoadUserAvatar(){
-    this.getAvatar(this.noteItem?.noteId).subscribe((item:any)=>{
-      this.Url = this.Url + item
+  LoadOwnerAvatar(){
+    this.getOwnerAvatar(this.noteItem?.noteId).subscribe((item:any)=>{
+      this.UrlOwner = this.UrlOwner + item
     });
-    this.Url = environment.apiUrl + '//Images//';
+    this.UrlOwner = environment.apiUrl + '//Images//';
   }
   // initPriorities(){
   //   this.priorityService.getAllPriority().subscribe((data: any[])=>{
@@ -208,7 +209,7 @@ export class NoteItemComponent implements OnInit {
   }
 
   showCollabModal(){
-    this.LoadUserAvatar();
+    this.LoadOwnerAvatar();
     this.getOwnerUser();
     this.getCollabUsers();
     this.collabModal = true;
@@ -237,7 +238,8 @@ export class NoteItemComponent implements OnInit {
           this.userCollabList.push({
             hasError: false,
             icon: this.ICON_MINUS,
-            user: item
+            user: item?.user,
+            avatar: item?.avatar,
           })
         });
       }
@@ -250,6 +252,7 @@ export class NoteItemComponent implements OnInit {
             icon: this.ICON_PLUS,
             user: null,
             hasError: false,
+            avatar: "",
           })
         }
         this.isSpinning = false;
@@ -337,6 +340,7 @@ export class NoteItemComponent implements OnInit {
             icon: this.ICON_PLUS,
             user: null,
             hasError: false,
+            avatar: "",
           })
           userCollab.icon = this.ICON_MINUS
         }

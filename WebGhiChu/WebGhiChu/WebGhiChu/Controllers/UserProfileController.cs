@@ -136,6 +136,31 @@ namespace WebGhiChu.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("GetUser")]
+        /*[Authorize]*/
+        public async Task<IActionResult> GetUser(Guid NoteId)
+        {
+            List<Avatars> avatars = new List<Avatars>();
+            var note = await _context.Notes.Include(x => x.User).Include(x => x.UserNotes).Include(x => x.UserNotes).Where(x => x.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
+            var usernote = note.UserNotes;
+            foreach (var item in usernote)
+            {
+                Avatars avatar = await _context.Avatars.FirstOrDefaultAsync(s => s.UserId.Equals(item.UserId));
+                if (avatar != null)
+                {
+                    avatars.Add(avatar);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+                
+            }
+            return new JsonResult(avatars);
+        }
+
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetUserProfile()

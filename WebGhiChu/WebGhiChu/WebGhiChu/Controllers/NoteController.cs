@@ -370,7 +370,7 @@ namespace WebGhiChu.Controllers
         {
             var userNotes = await _context.UserNotes.Include(x => x.User).Where(x => x.NoteId.Equals(NoteId)).ToListAsync();
 
-            if(userNotes == null || userNotes.Count == 0)
+            if (userNotes == null || userNotes.Count == 0)
             {
                 return Ok(new
                 {
@@ -379,11 +379,18 @@ namespace WebGhiChu.Controllers
                 });
             }
 
-            var listUsers = new List<ApplicationUser>();
+            var listUsers = new List<AvatarVM>();
 
-            foreach(var item in userNotes)
+            foreach (var item in userNotes)
             {
-                listUsers.Add(item.User);
+                var avatar = await _context.Avatars.FirstOrDefaultAsync(s => s.UserId.Equals(item.UserId));
+                AvatarVM avatarVM = new AvatarVM()
+                {
+                    User = item.User,
+                    Avatar = avatar.AvatarUrl,
+                };
+
+                listUsers.Add(avatarVM);
             }
 
             return Ok(new
