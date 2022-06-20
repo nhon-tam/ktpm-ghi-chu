@@ -44,17 +44,34 @@ namespace WebGhiChu.Controllers
         public async Task<IActionResult> Search(String Filter)
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
+            var listNote = await _context.Notes.Include(x => x.User)
+                                                    .Where(x => x.UserId.Equals(userId)
+                                                            && x.IsDeleted == true
+                                                            )
+                                                    .OrderByDescending(x => x.DateCreated)
+                                                    .ToListAsync();
+
+            var listCollabNote = await _context.UserNotes.Include(x => x.Note).Where(x => x.UserId.Equals(userId) && x.IsDeleted == true).ToListAsync();
+            if (listCollabNote != null && listCollabNote.Count > 0)
+            {
+                foreach (var collabNote in listCollabNote)
+                {
+                    listNote.Add(collabNote.Note);
+                }
+            }
+            listNote = listNote.OrderByDescending(x => x.DateCreated).ToList();
+
             if (String.IsNullOrWhiteSpace(Filter))
             {
-                return new JsonResult(_context.Notes.Where(u => u.IsDeleted == true));
+                return new JsonResult(listNote);
             }
-            var list = await _context.Notes
-                .Include(x => x.User)
-                .Where(x => x.IsDeleted == true
-                    && x.UserId.Equals(userId)
+
+            listNote = listNote
+                .Where(x => 
+                     x.UserId.Equals(userId)
                     && (x.Title.Contains(Filter) || x.Description.Contains(Filter))
-                    ).ToListAsync();
-            return new JsonResult(list);
+                    ).OrderByDescending(x => x.DateCreated).ToList();
+            return new JsonResult(listNote);
         }
 
 
@@ -92,9 +109,8 @@ namespace WebGhiChu.Controllers
                 userNote.IsDeleted = false;
                 userNote.DateDeleted = null;
                 userNote.DateUpdated = nowTime;
-                _context.Notes.Update(note);
 
-                _context.UserNotes.Remove(userNote);
+                _context.UserNotes.Update(userNote);
                 await _context.SaveChangesAsync();
 
                 return Ok(new
