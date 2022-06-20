@@ -77,7 +77,6 @@ namespace WebGhiChu.Controllers
 
         [HttpPut("RevertDeleteNote")]
         [Authorize]
-
         public async Task<IActionResult> RevertDeleteNote(Guid NoteId)
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
@@ -132,7 +131,6 @@ namespace WebGhiChu.Controllers
 
         [HttpDelete("DeleteNote")]
         [Authorize]
-
         public async Task<IActionResult> DeleteNote(Guid NoteId)
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
@@ -180,7 +178,6 @@ namespace WebGhiChu.Controllers
 
         [HttpDelete("DeleteEndTime")]
         [Authorize]
-
         public async Task<IActionResult> DeleteEndTime()
         {
             List<UserNote> userNotes = await _context.UserNotes.Where(u => u.IsDeleted == true && u.DateDeleted.Value.AddDays(7) <= DateTime.Now).ToListAsync();
@@ -204,7 +201,6 @@ namespace WebGhiChu.Controllers
 
         [HttpDelete("DeleteAll")]
         [Authorize]
-
         public async Task<IActionResult> DeleteAll()
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;
