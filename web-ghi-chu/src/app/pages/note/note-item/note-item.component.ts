@@ -106,22 +106,22 @@ export class NoteItemComponent implements OnInit {
 
   ngOnInit(): void {
     // this.initPriorities();
-    this.LoadUserAvatar();
     this.commonService.listLayout$.subscribe((active)=>{
       this.listLayout = active;
       this.changeStyleNote();
 
     })
   }
-  getAvatar(){
-    return this.userProfileService.getAvatar()
-  }
 
   LoadUserAvatar(){
-    this.getAvatar().subscribe((item:any)=>{
+    this.getAvatar(this.noteItem?.noteId).subscribe((item:any)=>{
       this.Url = this.Url + item
     });
     this.Url = environment.apiUrl + '//Images//';
+  }
+
+  getAvatar(noteId: string){
+    return this.userProfileService.getOwnerAvatar(noteId)
   }
   // initPriorities(){
   //   this.priorityService.getAllPriority().subscribe((data: any[])=>{
@@ -208,6 +208,7 @@ export class NoteItemComponent implements OnInit {
   }
 
   showCollabModal(){
+    this.LoadUserAvatar();
     this.getOwnerUser();
     this.getCollabUsers();
     this.collabModal = true;

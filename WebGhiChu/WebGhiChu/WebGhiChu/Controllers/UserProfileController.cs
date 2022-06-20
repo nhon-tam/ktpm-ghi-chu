@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -118,6 +119,23 @@ namespace WebGhiChu.Controllers
             else { return BadRequest(); }
         }
 
+        [HttpGet("GetOwner")]
+        [Authorize]
+        public async Task<IActionResult> GetOwner(Guid NoteId)
+        {
+            var note = await _context.Notes.Include(x => x.User).Where(x => x.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
+            var user = note.User;
+            var avatar = _context.Avatars.FirstOrDefault(s => s.UserId.Equals(user.Id));
+
+            if (avatar != null)
+            {
+                return new JsonResult(avatar.AvatarUrl);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetUserProfile()

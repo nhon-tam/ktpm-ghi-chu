@@ -34,4 +34,8 @@ export class UserProfileService {
   getAvatar(){
     return this.http.get(`${environment.apiUrl}/api/UserProfile/getAvatar`, {headers: this._sharedHeaders});
   }
+
+  getOwnerAvatar(noteId: string){
+    return this.http.get(`${environment.apiUrl}/api/UserProfile/GetOwner?NoteId=${noteId}`, {headers: this._sharedHeaders});
+  }
 }
