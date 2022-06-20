@@ -63,17 +63,36 @@
         <p class="description">{{noteItem?.description}}</p>
       </div>
       <ng-template pTemplate="footer">
-        <div class="d-flex">
-          <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
-          <button pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
-          <!-- <button pButton pRipple type="button" icon="pi pi-palette" class="p-button-rounded p-button-text"></button> -->
-          <ngx-colors
-            ngx-colors-trigger
-            [hideTextInput]="true"
-            [hideColorPicker]="false"
+        <div class="d-flex justify-content-between">
+          <div>
+            <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
+            <button pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+            <!-- <button pButton pRipple type="button" icon="pi pi-palette" class="p-button-rounded p-button-text"></button> -->
+          </div>
+          <div>
+            <button pButton pRipple nz-dropdown icon="pi pi-ellipsis-v" [nzDropdownMenu]="menu" class="p-button-rounded p-button-text" nzPlacement="bottomRight"></button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="cloneNote()">Tạo bản sao</li>
+                <li nz-menu-item>Thêm nhãn</li>
+                <li nz-menu-item><ngx-colors
+                  ngx-colors-trigger
+                  [hideTextInput]="true"
+                  [hideColorPicker]="false"
+                  (change)="onChangeNoteColor($event)"
+                  acceptLabel="Chọn"
+                  cancelLabel="Hủy"
+                ></ngx-colors>
+                Thêm màu
 
-          ></ngx-colors>
-        </div>
+              </li>
+              </ul>
+            </nz-dropdown-menu>
+          </div>
+
+        <!-- <button #more pButton pRipple type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text"></button> -->
+
+      </div>
       </ng-template>
     </p-card>
   </div>
@@ -103,7 +122,7 @@
               <ng-template let-user pTemplate="item">
                 <div class="row">
                     <div class="col-3">
-                      <p-avatar p-avatar icon="pi pi-user" [styleClass]="'image-avatar'" shape="circle" size="xlarge"></p-avatar>
+                      <p-avatar p-avatar icon="pi pi-user"  [styleClass]="'image-avatar'" shape="circle" size="xlarge"></p-avatar>
                     </div>
                     <div class="col-7"><b>{{user?.userName}}</b></div>
                 </div>
@@ -127,7 +146,7 @@
 
 
 <nz-spin [nzSpinning]="isSpinning" >
-  <p-dialog (onHide)="onHideModal()" [(visible)]="displayModal" [modal]="true" [style]="{width: '586px', height: '500px', 'background-color': this.noteItem?.color}">
+  <p-dialog (onHide)="onHideModal()" [(visible)]="displayModal" [modal]="true" [style]=" styleEditItem">
     <ng-template pTemplate="header">
         <textarea class="hide-border title-edit" name="title" [(ngModel)]="noteRequest.title" placeholder="Tiêu đề" rows="1"  pInputTextarea [autoResize]="true"></textarea>
     </ng-template>
@@ -145,16 +164,44 @@
       <div class="row">
         <div class="d-flex justify-content-between">
           <div class="list-icon w-100">
-            <div class="d-flex justify-content-start">
+            <div class="d-flex justify-content-between">
               <!-- <div class="mx-2">
                 <button pButton pRipple type="button" icon="pi pi-bell" class="p-button-rounded p-button-text"></button>
-              </div> -->
+              </div>
               <div class="mx-2">
                 <button pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
               </div>
               <div class="mx-2">
                 <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
-              </div>
+              </div> -->
+                  <div>
+                    <button pButton pRipple type="button" icon="fa fa-trash" (click)="removeNote()" class="p-button-rounded p-button-text"></button>
+                    <button pButton pRipple type="button" icon="fa fa-user-plus" (click)="showCollabModal()" class="p-button-rounded p-button-text"></button>
+                    <!-- <button pButton pRipple type="button" icon="pi pi-palette" class="p-button-rounded p-button-text"></button> -->
+                  </div>
+                  <div>
+                    <button pButton pRipple nz-dropdown icon="pi pi-ellipsis-v" [nzDropdownMenu]="menu" class="p-button-rounded p-button-text" nzPlacement="bottomRight"></button>
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                      <ul nz-menu>
+                        <li nz-menu-item (click)="cloneNote()">Tạo bản sao</li>
+                        <li nz-menu-item>Thêm nhãn</li>
+                        <li nz-menu-item><ngx-colors
+                          ngx-colors-trigger
+                          [hideTextInput]="true"
+                          [hideColorPicker]="false"
+                          (change)="onChangeNoteColor($event)"
+                          acceptLabel="Chọn"
+                          cancelLabel="Hủy"
+                        ></ngx-colors>
+                        Thêm màu
+
+                      </li>
+                      </ul>
+                    </nz-dropdown-menu>
+                  </div>
+
+                <!-- <button #more pButton pRipple type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text"></button> -->
+
             </div>
           </div>
           <div class="close-edit">

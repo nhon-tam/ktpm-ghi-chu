@@ -398,8 +398,7 @@ namespace WebGhiChu.Controllers
         [Authorize]
         public async Task<IActionResult> GetDetail(Guid NoteId)
         {
-            string userId = User.Claims.First(c => c.Type == "UserId").Value;
-            var note = await _context.Notes.Where(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
+            var note = await _context.Notes.Where(x => x.IsDeleted == false && x.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
             return new JsonResult(note);
         }
 

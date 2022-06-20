@@ -76,6 +76,7 @@ export class NoteItemComponent implements OnInit {
   emptyNote: boolean;
 
   styleItem: any;
+  styleEditItem: any;
 
   editStyleModal: any;
 
@@ -110,8 +111,8 @@ export class NoteItemComponent implements OnInit {
     this.commonService.listLayout$.subscribe((active)=>{
       this.listLayout = active;
       this.changeStyleNote();
-
     })
+
   }
   getAvatar(){
     return this.userProfileService.getAvatar()
@@ -228,37 +229,49 @@ export class NoteItemComponent implements OnInit {
   getCollabUsers(){
     this.userCollabList = []
     this.isSpinning = true;
-    this.getCollabUsersFromServer(this.noteItem?.noteId).subscribe((res: CollabRequest)=>{
-      setTimeout(()=>{
-        if(res.success){
-          res.listUsers.forEach((item)=>{
-            this.userCollabList.push({
-              hasError: false,
-              icon: this.ICON_MINUS,
-              user: item
-            })
-          });
-        }
 
-        this.userCollabList.push({
-          icon: this.ICON_PLUS,
-          user: null,
-          hasError: false,
-        })
+
+    this.getCollabUsersFromServer(this.noteItem?.noteId).subscribe((res: CollabRequest)=>{
+      if(res.success){
+        res.listUsers.forEach((item)=>{
+          this.userCollabList.push({
+            hasError: false,
+            icon: this.ICON_MINUS,
+            user: item
+          })
+        });
+      }
+      setTimeout(()=>{
+
+
+
+        if(this.noteItem?.user?.userName === this.ownerInfor?.userName){
+          this.userCollabList.push({
+            icon: this.ICON_PLUS,
+            user: null,
+            hasError: false,
+          })
+        }
+        this.isSpinning = false;
 
       }, 1000);
     });
-
   }
 
   getNoteDetail(){
     this.isSpinning = true;
-
+    console.log(this.noteItem?.noteId);
     this.getDetailFromServer(this.noteItem?.noteId).subscribe((res: any)=>{
 
       setTimeout(()=>{
+        console.log(res)
         this.noteRequest.description = res?.description;
         this.noteRequest.title = res?.title;
+        this.styleEditItem = {
+          'width': '500px'
+          ,'height': '500px'
+          ,'background-color' : res?.color
+          };
         this.isSpinning = false;
       }, 1000)
     })
