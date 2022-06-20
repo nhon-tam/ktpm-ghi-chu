@@ -58,7 +58,7 @@ export function httpTranslateLoaderFactory(http: HttpClient) {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:5000", "localhost:5001"],
+        allowedDomains: ["localhost:5000", "localhost:5001", "192.168.1.17:45456"],
         disallowedRoutes: []
       }
     })

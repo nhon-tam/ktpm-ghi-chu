@@ -97,7 +97,7 @@ namespace WebGhiChu.Controllers
         }
 
         [HttpGet("getAvatar")]
-
+        [Authorize]
         public async Task<IActionResult> GetAvatarByUserId()
         {
             string userId = User.Claims.First(c => c.Type == "UserId").Value;

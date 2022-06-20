@@ -94,8 +94,36 @@ namespace WebGhiChu.Controllers
                 });
             }
 
-        
+            if (!note.UserId.Equals(userId))
+            {
+                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.Equals(NoteId)).FirstOrDefaultAsync();
+
+                if (userNote == null)
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Không tìm thấy ghi chú!",
+                        Success = false,
+                    });
+                }
+
+                userNote.IsDeleted = true;
+                userNote.DateDeleted = DateTime.Now;
+
+                _context.UserNotes.Update(userNote);
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    Message = "Xóa thành công",
+                    Success = true,
+                });
+
+            }
+
             note.IsDeleted = true;
+            note.DateDeleted = DateTime.Now;
 
             _context.Notes.Update(note);
 

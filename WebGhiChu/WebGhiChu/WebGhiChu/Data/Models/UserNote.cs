@@ -21,6 +21,8 @@ namespace WebGhiChu.Data.Models
         public DateTime? DateUpdated { get; set; }
         public DateTime? DateCreated { get; set; }
 
+        public DateTime? DateDeleted { get; set; }
+
 
         [ForeignKey("UserId")]
 

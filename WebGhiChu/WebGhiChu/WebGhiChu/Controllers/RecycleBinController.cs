@@ -63,6 +63,9 @@ namespace WebGhiChu.Controllers
 
         public async Task<IActionResult> RevertDeleteNote(Guid NoteId)
         {
+            string userId = User.Claims.First(c => c.Type == "UserId").Value;
+            var nowTime = DateTime.Now;
+
             var note = await _context.Notes.FindAsync(NoteId);
             if(note == null)
             {
@@ -71,8 +74,37 @@ namespace WebGhiChu.Controllers
                     Success = false,
                     Message = "Không tìm thấy!"
                 });
-            }                
-            var nowTime = DateTime.Now;
+            }
+
+            if (!note.UserId.Equals(userId))
+            {
+                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.Equals(NoteId)).FirstOrDefaultAsync();
+
+                if (userNote == null)
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Không tìm thấy ghi chú!",
+                        Success = false,
+                    });
+                }
+
+                userNote.IsDeleted = false;
+                userNote.DateDeleted = null;
+                userNote.DateUpdated = nowTime;
+                _context.Notes.Update(note);
+
+                _context.UserNotes.Remove(userNote);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    Message = "Xóa thành công",
+                    Success = true,
+                });
+
+            }
+
             note.IsDeleted = false;
             note.DateDeleted = null;
             note.DateUpdated = nowTime;
@@ -87,6 +119,8 @@ namespace WebGhiChu.Controllers
 
         public async Task<IActionResult> DeleteNote(Guid NoteId)
         {
+            string userId = User.Claims.First(c => c.Type == "UserId").Value;
+
             var note = await _context.Notes.FindAsync(NoteId);
             if(note == null)
             {
@@ -95,6 +129,31 @@ namespace WebGhiChu.Controllers
                     Message = "Không tìm thấy ghi chú!",
                     Success = false,
                 });
+            }
+
+            if (!note.UserId.Equals(userId))
+            {
+                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.Equals(NoteId)).FirstOrDefaultAsync();
+
+                if(userNote == null)
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Không tìm thấy ghi chú!",
+                        Success = false,
+                    });
+                }
+
+
+                _context.UserNotes.Remove(userNote);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    Message = "Xóa thành công",
+                    Success = true,
+                });
+
             }
 
             _context.Notes.Remove(note);
@@ -108,7 +167,16 @@ namespace WebGhiChu.Controllers
 
         public async Task<IActionResult> DeleteEndTime()
         {
+            List<UserNote> userNotes = await _context.UserNotes.Where(u => u.IsDeleted == true && u.DateDeleted.Value.AddDays(7) <= DateTime.Now).ToListAsync();
+
             List<Note> notes = await _context.Notes.Where(u => u.IsDeleted == true && u.DateDeleted.Value.AddDays(7) <= DateTime.Now).ToListAsync();
+
+            foreach (var note in userNotes)
+            {
+                _context.UserNotes.Remove(note);
+                await _context.SaveChangesAsync();
+            }
+
             foreach (var note in notes)
             {
                 _context.Notes.Remove(note);
@@ -124,6 +192,13 @@ namespace WebGhiChu.Controllers
         public async Task<IActionResult> DeleteAll()
         {
             List<Note> notes = await _context.Notes.Where(u => u.IsDeleted == true).ToListAsync();
+            List<UserNote> userNotes = await _context.UserNotes.Where(u => u.IsDeleted == true).ToListAsync();
+            foreach (var note in userNotes)
+            {
+                _context.UserNotes.Remove(note);
+                await _context.SaveChangesAsync();
+            }
+
             foreach (var note in notes)
             {
                 _context.Notes.Remove(note);
