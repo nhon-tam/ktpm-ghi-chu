@@ -32,9 +32,9 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.modelLogin).subscribe(
       (res: any)=>{
         localStorage.setItem('token', res?.token);
-        this.isSpinning = false;
         this.messageService.add({severity:'success', summary:'Đăng nhập thành công!', detail:'Bạn đã đăng nhập thành công tài khoản và mật khẩu'});
         setTimeout(()=>{
+          this.isSpinning = false;
           this.router.navigateByUrl('/dashboard');
         }, 1000);
       },
@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
         if(error.status == 400){
           this.errorMessage = "Tài khoản hoặc mật khẩu không đúng!";
           this.isSpinning = false;
-
         }
       }
       )

@@ -78,7 +78,8 @@ namespace WebGhiChu.Controllers
                         new Claim("UserId", user.Id.ToString()),
 
                     }),
-                    Expires = DateTime.UtcNow.AddHours(2),
+                    Expires = DateTime.UtcNow.AddMinutes(30),
+
                     SigningCredentials = new SigningCredentials(
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), 
                         SecurityAlgorithms.HmacSha256Signature)

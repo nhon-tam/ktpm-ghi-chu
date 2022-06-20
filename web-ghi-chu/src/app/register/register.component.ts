@@ -70,13 +70,16 @@ export class RegisterComponent implements OnInit {
         if(res?.succeeded){
           this.messageService.add({severity:'success', summary:'Đăng ký thành công!', detail:'Bạn đã đăng ký thành công tài khoản và mật khẩu'});
           setTimeout(()=>{
+            this.btnDisabled = false;
+            this.isSpinning = false;
             this.router.navigateByUrl('/login');
           }, 1000);
         }else{
+          this.btnDisabled = false;
+          this.isSpinning = false;
           this.showErrors(res?.errors);
         }
-        this.btnDisabled = false;
-        this.isSpinning = false;
+
       },
       (error)=>{
           if(error?.status == 400){
