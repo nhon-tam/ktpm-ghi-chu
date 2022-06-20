@@ -96,7 +96,7 @@ namespace WebGhiChu.Controllers
 
             if (!note.UserId.Equals(userId))
             {
-                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.Equals(NoteId)).FirstOrDefaultAsync();
+                var userNote = await _context.UserNotes.Where(x => x.UserId.Equals(userId) && x.Note.NoteId.Equals(NoteId)).FirstOrDefaultAsync();
 
                 if (userNote == null)
                 {
@@ -145,12 +145,12 @@ namespace WebGhiChu.Controllers
 
             var listNote = await _context.Notes.Include(x => x.User)
                                                     .Where(x => x.UserId.Equals(userId)
-                                                            && x.IsDeleted == false
+                                                            && x.IsDeleted != true
                                                             )
                                                     .OrderByDescending(x => x.DateCreated)
                                                     .ToListAsync();
 
-            var listCollabNote = await _context.UserNotes.Include(x => x.Note).Where(x => x.UserId.Equals(userId) && x.IsDeleted == false).ToListAsync();
+            var listCollabNote = await _context.UserNotes.Include(x => x.Note).Where(x => x.UserId.Equals(userId) && x.IsDeleted != true).ToListAsync();
             if(listCollabNote != null && listCollabNote.Count > 0)
             {
                 foreach(var collabNote in listCollabNote)
